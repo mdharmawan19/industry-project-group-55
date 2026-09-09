@@ -1,7 +1,15 @@
-# Data
-data/
+# Data files
+data/*
 
-# Keep the folder structure
+# Keep these folders
+!data/raw/
+!data/curated/
+
+# Ignore everything inside them
+data/raw/*
+data/curated/*
+
+# Except the .gitkeep files
 !data/raw/.gitkeep
 !data/curated/.gitkeep
 
