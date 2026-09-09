@@ -1,0 +1,15 @@
+# Raw property data
+data/raw/
+Data/
+suburbs/
+vic_rentals_all.csv
+suburb_summary.csv
+postcodes.csv
+
+# Python
+__pycache__/
+*.pyc
+
+# Jupyter
+.ipynb_checkpoints/
+
