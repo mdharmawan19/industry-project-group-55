@@ -1,0 +1,215 @@
+dffh_area,suburb,suburb_u,postcode,suburb_key
+Albert Park-Middle Park-West St Kilda,Albert Park,ALBERT PARK,3206.0,ALBERT_PARK_3206
+Albert Park-Middle Park-West St Kilda,Middle Park,MIDDLE PARK,3206.0,MIDDLE_PARK_3206
+Albert Park-Middle Park-West St Kilda,St Kilda West,ST KILDA WEST,3182.0,ST_KILDA_WEST_3182
+Altona,Altona,ALTONA,3018.0,ALTONA_3018
+Armadale,Armadale,ARMADALE,3143.0,ARMADALE_3143
+Aspendale-Chelsea-Carrum,Aspendale,ASPENDALE,3195.0,ASPENDALE_3195
+Aspendale-Chelsea-Carrum,Chelsea,CHELSEA,3196.0,CHELSEA_3196
+Aspendale-Chelsea-Carrum,Carrum,CARRUM,3197.0,CARRUM_3197
+Bairnsdale,Bairnsdale,BAIRNSDALE,3875.0,BAIRNSDALE_3875
+Ballarat,Ballarat,BALLARAT,3350.0,BALLARAT_3350
+Balwyn,Balwyn,BALWYN,3103.0,BALWYN_3103
+Bayswater,Bayswater,BAYSWATER,3153.0,BAYSWATER_3153
+Belmont-Grovedale,Belmont,BELMONT,3216.0,BELMONT_3216
+Belmont-Grovedale,Grovedale,GROVEDALE,3216.0,GROVEDALE_3216
+Benalla,Benalla,BENALLA,3671.0,BENALLA_3671
+Bendigo,Bendigo,BENDIGO,3550.0,BENDIGO_3550
+Bentleigh,Bentleigh,BENTLEIGH,3204.0,BENTLEIGH_3204
+Berwick,Berwick,BERWICK,3806.0,BERWICK_3806
+Blackburn,Blackburn,BLACKBURN,3130.0,BLACKBURN_3130
+Boronia,Boronia,BORONIA,3155.0,BORONIA_3155
+Box Hill,Box Hill,BOX HILL,3128.0,BOX_HILL_3128
+Brighton,Brighton,BRIGHTON,3186.0,BRIGHTON_3186
+Brighton East,Brighton East,BRIGHTON EAST,3187.0,BRIGHTON_EAST_3187
+Broadmeadows-Roxburgh Park,Broadmeadows,BROADMEADOWS,3047.0,BROADMEADOWS_3047
+Broadmeadows-Roxburgh Park,Roxburgh Park,ROXBURGH PARK,3064.0,ROXBURGH_PARK_3064
+Brunswick,Brunswick,BRUNSWICK,3056.0,BRUNSWICK_3056
+Bulleen-Templestowe-Doncaster,Bulleen,BULLEEN,3105.0,BULLEEN_3105
+Bulleen-Templestowe-Doncaster,Templestowe,TEMPLESTOWE,3106.0,TEMPLESTOWE_3106
+Bulleen-Templestowe-Doncaster,Doncaster,DONCASTER,3108.0,DONCASTER_3108
+Bundoora-Greensborough-Hurstbridge,Bundoora,BUNDOORA,3083.0,BUNDOORA_3083
+Bundoora-Greensborough-Hurstbridge,Greensborough,GREENSBOROUGH,3088.0,GREENSBOROUGH_3088
+Bundoora-Greensborough-Hurstbridge,Hurstbridge,HURSTBRIDGE,3099.0,HURSTBRIDGE_3099
+Burwood-Ashburton,Burwood,BURWOOD,3125.0,BURWOOD_3125
+Burwood-Ashburton,Ashburton,ASHBURTON,3147.0,ASHBURTON_3147
+CBD-St Kilda Rd,Melbourne,MELBOURNE,3000.0,MELBOURNE_3000
+Camberwell-Glen Iris,Camberwell,CAMBERWELL,3124.0,CAMBERWELL_3124
+Camberwell-Glen Iris,Glen Iris,GLEN IRIS,3146.0,GLEN_IRIS_3146
+Canterbury-Surrey Hills-Mont Albert,Canterbury,CANTERBURY,3126.0,CANTERBURY_3126
+Canterbury-Surrey Hills-Mont Albert,Surrey Hills,SURREY HILLS,3127.0,SURREY_HILLS_3127
+Canterbury-Surrey Hills-Mont Albert,Mont Albert,MONT ALBERT,3127.0,MONT_ALBERT_3127
+Carlton North,Carlton North,CARLTON NORTH,3054.0,CARLTON_NORTH_3054
+Carlton-Parkville,Carlton,CARLTON,3053.0,CARLTON_3053
+Carlton-Parkville,Parkville,PARKVILLE,3052.0,PARKVILLE_3052
+Carnegie,Carnegie,CARNEGIE,3163.0,CARNEGIE_3163
+Castlemaine,Castlemaine,CASTLEMAINE,3450.0,CASTLEMAINE_3450
+Caulfield,Caulfield,CAULFIELD,3162.0,CAULFIELD_3162
+Chadstone-Oakleigh,Chadstone,CHADSTONE,3148.0,CHADSTONE_3148
+Chadstone-Oakleigh,Oakleigh,OAKLEIGH,3166.0,OAKLEIGH_3166
+Cheltenham,Cheltenham,CHELTENHAM,3192.0,CHELTENHAM_3192
+Clayton,Clayton,CLAYTON,3168.0,CLAYTON_3168
+Coburg-Pascoe Vale South,Coburg,COBURG,3058.0,COBURG_3058
+Coburg-Pascoe Vale South,Pascoe Vale South,PASCOE VALE SOUTH,3044.0,PASCOE_VALE_SOUTH_3044
+Collingwood-Abbotsford,Collingwood,COLLINGWOOD,3066.0,COLLINGWOOD_3066
+Collingwood-Abbotsford,Abbotsford,ABBOTSFORD,3067.0,ABBOTSFORD_3067
+Corio,Corio,CORIO,3214.0,CORIO_3214
+Craigieburn,Craigieburn,CRAIGIEBURN,3064.0,CRAIGIEBURN_3064
+Cranbourne,Cranbourne,CRANBOURNE,3977.0,CRANBOURNE_3977
+Croydon-Lilydale,Croydon,CROYDON,3136.0,CROYDON_3136
+Croydon-Lilydale,Lilydale,LILYDALE,3140.0,LILYDALE_3140
+Dandenong,Dandenong,DANDENONG,3175.0,DANDENONG_3175
+Dandenong North-Endeavour Hills,Dandenong North,DANDENONG NORTH,,
+Dandenong North-Endeavour Hills,Endeavour Hills,ENDEAVOUR HILLS,3802.0,ENDEAVOUR_HILLS_3802
+Docklands,Docklands,DOCKLANDS,3008.0,DOCKLANDS_3008
+Doncaster East-Donvale,Doncaster East,DONCASTER EAST,3109.0,DONCASTER_EAST_3109
+Doncaster East-Donvale,Donvale,DONVALE,3111.0,DONVALE_3111
+Dromana-Portsea,Dromana,DROMANA,3936.0,DROMANA_3936
+Dromana-Portsea,Portsea,PORTSEA,3944.0,PORTSEA_3944
+East Brunswick,Brunswick East,BRUNSWICK EAST,3057.0,BRUNSWICK_EAST_3057
+East Hawthorn,Hawthorn East,HAWTHORN EAST,3123.0,HAWTHORN_EAST_3123
+East Melbourne,East Melbourne,EAST MELBOURNE,3002.0,EAST_MELBOURNE_3002
+East St Kilda,St Kilda East,ST KILDA EAST,3183.0,ST_KILDA_EAST_3183
+Echuca,Echuca,ECHUCA,3564.0,ECHUCA_3564
+Elsternwick,Elsternwick,ELSTERNWICK,3185.0,ELSTERNWICK_3185
+Eltham-Research-Montmorency,Eltham,ELTHAM,3095.0,ELTHAM_3095
+Eltham-Research-Montmorency,Research,RESEARCH,3095.0,RESEARCH_3095
+Eltham-Research-Montmorency,Montmorency,MONTMORENCY,3094.0,MONTMORENCY_3094
+Elwood,Elwood,ELWOOD,3184.0,ELWOOD_3184
+Essendon,Essendon,ESSENDON,3040.0,ESSENDON_3040
+Fairfield-Alphington,Fairfield,FAIRFIELD,3078.0,FAIRFIELD_3078
+Fairfield-Alphington,Alphington,ALPHINGTON,3078.0,ALPHINGTON_3078
+Ferntree Gully,Ferntree Gully,FERNTREE GULLY,3156.0,FERNTREE_GULLY_3156
+Fitzroy,Fitzroy,FITZROY,3065.0,FITZROY_3065
+Fitzroy North-Clifton Hill,Fitzroy North,FITZROY NORTH,3068.0,FITZROY_NORTH_3068
+Fitzroy North-Clifton Hill,Clifton Hill,CLIFTON HILL,3068.0,CLIFTON_HILL_3068
+Flemington-Kensington,Flemington,FLEMINGTON,3031.0,FLEMINGTON_3031
+Flemington-Kensington,Kensington,KENSINGTON,3031.0,KENSINGTON_3031
+Flora Hill-Bendigo East,Flora Hill,FLORA HILL,,
+Flora Hill-Bendigo East,Bendigo East,BENDIGO EAST,,
+Footscray,Footscray,FOOTSCRAY,3011.0,FOOTSCRAY_3011
+Frankston,Frankston,FRANKSTON,3199.0,FRANKSTON_3199
+Geelong-Newcombe,Geelong,GEELONG,3220.0,GEELONG_3220
+Geelong-Newcombe,Newcomb,NEWCOMB,3219.0,NEWCOMB_3219
+Gladstone Park-Tullamarine,Gladstone Park,GLADSTONE PARK,3043.0,GLADSTONE_PARK_3043
+Gladstone Park-Tullamarine,Tullamarine,TULLAMARINE,3043.0,TULLAMARINE_3043
+Glen Waverley-Mulgrave,Glen Waverley,GLEN WAVERLEY,3150.0,GLEN_WAVERLEY_3150
+Glen Waverley-Mulgrave,Mulgrave,MULGRAVE,3170.0,MULGRAVE_3170
+Golden Square-Kangaroo Flat,Golden Square,GOLDEN SQUARE,3555.0,GOLDEN_SQUARE_3555
+Golden Square-Kangaroo Flat,Kangaroo Flat,KANGAROO FLAT,3555.0,KANGAROO_FLAT_3555
+Hamilton,Hamilton,HAMILTON,3300.0,HAMILTON_3300
+Hampton-Beaumaris,Hampton,HAMPTON,3188.0,HAMPTON_3188
+Hampton-Beaumaris,Beaumaris,BEAUMARIS,3193.0,BEAUMARIS_3193
+Hastings-Flinders,Hastings,HASTINGS,3915.0,HASTINGS_3915
+Hastings-Flinders,Flinders,FLINDERS,3929.0,FLINDERS_3929
+Hawthorn,Hawthorn,HAWTHORN,3122.0,HAWTHORN_3122
+Heidelberg-Heidelberg West,Heidelberg,HEIDELBERG,3084.0,HEIDELBERG_3084
+Heidelberg-Heidelberg West,Heidelberg West,HEIDELBERG WEST,3081.0,HEIDELBERG_WEST_3081
+Herne Hill-Geelong West,Herne Hill,HERNE HILL,3218.0,HERNE_HILL_3218
+Herne Hill-Geelong West,Geelong West,GEELONG WEST,3218.0,GEELONG_WEST_3218
+Horsham,Horsham,HORSHAM,3400.0,HORSHAM_3400
+Ivanhoe-Ivanhoe East,Ivanhoe,IVANHOE,3079.0,IVANHOE_3079
+Ivanhoe-Ivanhoe East,Ivanhoe East,IVANHOE EAST,3079.0,IVANHOE_EAST_3079
+Keilor,Keilor,KEILOR,3036.0,KEILOR_3036
+Keilor East-Avondale Heights,Keilor East,KEILOR EAST,3033.0,KEILOR_EAST_3033
+Keilor East-Avondale Heights,Avondale Heights,AVONDALE HEIGHTS,3034.0,AVONDALE_HEIGHTS_3034
+Kew,Kew,KEW,3101.0,KEW_3101
+Lara,Lara,LARA,3212.0,LARA_3212
+Malvern,Malvern,MALVERN,3144.0,MALVERN_3144
+Malvern East,Malvern East,MALVERN EAST,3145.0,MALVERN_EAST_3145
+Melton,Melton,MELTON,3337.0,MELTON_3337
+Mentone-Parkdale-Mordialloc,Mentone,MENTONE,3194.0,MENTONE_3194
+Mentone-Parkdale-Mordialloc,Parkdale,PARKDALE,3195.0,PARKDALE_3195
+Mentone-Parkdale-Mordialloc,Mordialloc,MORDIALLOC,3195.0,MORDIALLOC_3195
+Mildura,Mildura,MILDURA,3502.0,MILDURA_3502
+Mill Park-Epping,Mill Park,MILL PARK,3082.0,MILL_PARK_3082
+Mill Park-Epping,Epping,EPPING,3076.0,EPPING_3076
+Moe-Newborough,Moe,MOE,3825.0,MOE_3825
+Moe-Newborough,Newborough,NEWBOROUGH,3825.0,NEWBOROUGH_3825
+Moonee Ponds-Ascot Vale,Moonee Ponds,MOONEE PONDS,3039.0,MOONEE_PONDS_3039
+Moonee Ponds-Ascot Vale,Ascot Vale,ASCOT VALE,3032.0,ASCOT_VALE_3032
+Morwell,Morwell,MORWELL,3840.0,MORWELL_3840
+Mount Clear-Buninyong,Mount Clear,MOUNT CLEAR,3350.0,MOUNT_CLEAR_3350
+Mount Clear-Buninyong,Buninyong,BUNINYONG,3357.0,BUNINYONG_3357
+Mount Waverley,Mount Waverley,MOUNT WAVERLEY,3149.0,MOUNT_WAVERLEY_3149
+Mt Eliza-Mornington-Mt Martha,Mount Eliza,MOUNT ELIZA,3930.0,MOUNT_ELIZA_3930
+Mt Eliza-Mornington-Mt Martha,Mornington,MORNINGTON,3931.0,MORNINGTON_3931
+Mt Eliza-Mornington-Mt Martha,Mount Martha,MOUNT MARTHA,3934.0,MOUNT_MARTHA_3934
+Murrumbeena-Hughesdale,Murrumbeena,MURRUMBEENA,3163.0,MURRUMBEENA_3163
+Murrumbeena-Hughesdale,Hughesdale,HUGHESDALE,3166.0,HUGHESDALE_3166
+Narre Warren-Hampton Park,Narre Warren,NARRE WARREN,3805.0,NARRE_WARREN_3805
+Narre Warren-Hampton Park,Hampton Park,HAMPTON PARK,3976.0,HAMPTON_PARK_3976
+Newport-Spotswood,Newport,NEWPORT,3015.0,NEWPORT_3015
+Newport-Spotswood,Spotswood,SPOTSWOOD,3015.0,SPOTSWOOD_3015
+Newtown,Newtown,NEWTOWN,3220.0,NEWTOWN_3220
+Noble Park,Noble Park,NOBLE PARK,3174.0,NOBLE_PARK_3174
+North Bendigo,North Bendigo,NORTH BENDIGO,3550.0,NORTH_BENDIGO_3550
+North Geelong,North Geelong,NORTH GEELONG,3215.0,NORTH_GEELONG_3215
+North Melbourne-West Melbourne,North Melbourne,NORTH MELBOURNE,3051.0,NORTH_MELBOURNE_3051
+North Melbourne-West Melbourne,West Melbourne,WEST MELBOURNE,3003.0,WEST_MELBOURNE_3003
+Northcote,Northcote,NORTHCOTE,3070.0,NORTHCOTE_3070
+Nunawading-Mitcham,Nunawading,NUNAWADING,3131.0,NUNAWADING_3131
+Nunawading-Mitcham,Mitcham,MITCHAM,3132.0,MITCHAM_3132
+Oak Park-Glenroy-Fawkner,Oak Park,OAK PARK,3046.0,OAK_PARK_3046
+Oak Park-Glenroy-Fawkner,Glenroy,GLENROY,3046.0,GLENROY_3046
+Oak Park-Glenroy-Fawkner,Fawkner,FAWKNER,3060.0,FAWKNER_3060
+Ocean Grove-Barwon Heads,Ocean Grove,OCEAN GROVE,3226.0,OCEAN_GROVE_3226
+Ocean Grove-Barwon Heads,Barwon Heads,BARWON HEADS,3227.0,BARWON_HEADS_3227
+Pakenham,Pakenham,PAKENHAM,3810.0,PAKENHAM_3810
+Pascoe Vale-Coburg North,Pascoe Vale,PASCOE VALE,3044.0,PASCOE_VALE_3044
+Pascoe Vale-Coburg North,Coburg North,COBURG NORTH,3058.0,COBURG_NORTH_3058
+Port Melbourne,Port Melbourne,PORT MELBOURNE,3207.0,PORT_MELBOURNE_3207
+Portland,Portland,PORTLAND,3305.0,PORTLAND_3305
+Prahran-Windsor,Prahran,PRAHRAN,3181.0,PRAHRAN_3181
+Prahran-Windsor,Windsor,WINDSOR,3181.0,WINDSOR_3181
+Preston,Preston,PRESTON,3072.0,PRESTON_3072
+Reservoir,Reservoir,RESERVOIR,3073.0,RESERVOIR_3073
+Richmond-Burnley,Richmond,RICHMOND,3121.0,RICHMOND_3121
+Richmond-Burnley,Burnley,BURNLEY,3121.0,BURNLEY_3121
+Ringwood,Ringwood,RINGWOOD,3134.0,RINGWOOD_3134
+Rowville,Rowville,ROWVILLE,3178.0,ROWVILLE_3178
+Sale-Maffra,Sale,SALE,3850.0,SALE_3850
+Sale-Maffra,Maffra,MAFFRA,3860.0,MAFFRA_3860
+Seaford-Carrum Downs,Seaford,SEAFORD,3198.0,SEAFORD_3198
+Seaford-Carrum Downs,Carrum Downs,CARRUM DOWNS,3201.0,CARRUM_DOWNS_3201
+Sebastopol-Delacombe,Sebastopol,SEBASTOPOL,3356.0,SEBASTOPOL_3356
+Sebastopol-Delacombe,Delacombe,DELACOMBE,3356.0,DELACOMBE_3356
+Seymour,Seymour,SEYMOUR,3660.0,SEYMOUR_3660
+Shepparton,Shepparton,SHEPPARTON,3630.0,SHEPPARTON_3630
+South Melbourne,South Melbourne,SOUTH MELBOURNE,3205.0,SOUTH_MELBOURNE_3205
+South Yarra,South Yarra,SOUTH YARRA,3141.0,SOUTH_YARRA_3141
+Southbank,Southbank,SOUTHBANK,3006.0,SOUTHBANK_3006
+Springvale,Springvale,SPRINGVALE,3171.0,SPRINGVALE_3171
+St Albans-Deer Park,St Albans,ST ALBANS,3021.0,ST_ALBANS_3021
+St Albans-Deer Park,Deer Park,DEER PARK,3023.0,DEER_PARK_3023
+St Kilda,St Kilda,ST KILDA,3182.0,ST_KILDA_3182
+Sunbury,Sunbury,SUNBURY,3429.0,SUNBURY_3429
+Sunshine,Sunshine,SUNSHINE,3020.0,SUNSHINE_3020
+Swan Hill,Swan Hill,SWAN HILL,3585.0,SWAN_HILL_3585
+Sydenham,Sydenham,SYDENHAM,3037.0,SYDENHAM_3037
+Thomastown-Lalor,Thomastown,THOMASTOWN,3074.0,THOMASTOWN_3074
+Thomastown-Lalor,Lalor,LALOR,3075.0,LALOR_3075
+Thornbury,Thornbury,THORNBURY,3071.0,THORNBURY_3071
+Toorak,Toorak,TOORAK,3142.0,TOORAK_3142
+Torquay,Torquay,TORQUAY,3228.0,TORQUAY_3228
+Traralgon,Traralgon,TRARALGON,3844.0,TRARALGON_3844
+Vermont-Forest Hill-Burwood East,Vermont,VERMONT,3133.0,VERMONT_3133
+Vermont-Forest Hill-Burwood East,Forest Hill,FOREST HILL,3131.0,FOREST_HILL_3131
+Vermont-Forest Hill-Burwood East,Burwood East,BURWOOD EAST,3151.0,BURWOOD_EAST_3151
+Wanagaratta,Wangaratta,WANGARATTA,3676.0,WANGARATTA_3676
+Wantirna-Scoresby,Wantirna,WANTIRNA,3152.0,WANTIRNA_3152
+Wantirna-Scoresby,Scoresby,SCORESBY,3179.0,SCORESBY_3179
+Warragul,Warragul,WARRAGUL,3820.0,WARRAGUL_3820
+Warrnambool,Warrnambool,WARRNAMBOOL,3280.0,WARRNAMBOOL_3280
+Wendouree-Alfredton,Wendouree,WENDOUREE,3355.0,WENDOUREE_3355
+Wendouree-Alfredton,Alfredton,ALFREDTON,3350.0,ALFREDTON_3350
+Werribee-Hoppers Crossing,Werribee,WERRIBEE,3030.0,WERRIBEE_3030
+Werribee-Hoppers Crossing,Hoppers Crossing,HOPPERS CROSSING,3029.0,HOPPERS_CROSSING_3029
+West Brunswick,Brunswick West,BRUNSWICK WEST,3055.0,BRUNSWICK_WEST_3055
+West Footscray,West Footscray,WEST FOOTSCRAY,3012.0,WEST_FOOTSCRAY_3012
+Whittlesea,Whittlesea,WHITTLESEA,3757.0,WHITTLESEA_3757
+Williamstown,Williamstown,WILLIAMSTOWN,3016.0,WILLIAMSTOWN_3016
+Wodonga,Wodonga,WODONGA,3689.0,WODONGA_3689
+Yarra Ranges,Yarra Ranges,YARRA RANGES,,
+Yarraville-Seddon,Yarraville,YARRAVILLE,3013.0,YARRAVILLE_3013
+Yarraville-Seddon,Seddon,SEDDON,3011.0,SEDDON_3011
