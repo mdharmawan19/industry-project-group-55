@@ -117,3 +117,23 @@ def growth_cagr(panel, property_type="All properties",
     piv = piv.dropna()
     piv["cagr_pct"] = ((piv.rent_end / piv.rent_start) ** (1 / yrs) - 1) * 100
     return piv.sort_values("cagr_pct", ascending=False).reset_index()    
+def yoy_growth(panel, property_type="All properties", min_count=20):
+    """Year-on-year growth per area per quarter.
+
+    The DFFH series is a MOVING ANNUAL median: consecutive quarters share
+    three of four quarters of underlying bonds. Differencing adjacent
+    quarters therefore yields heavily autocorrelated, artificially smooth
+    changes. Comparing the same quarter one year apart (lag 4) gives
+    non-overlapping windows.
+    """
+    s = panel[panel.property_type == property_type].copy()
+    s = s[s["count"] >= min_count]
+    s = s.sort_values(["area", "quarter"])
+    s["rent_lag4"] = s.groupby("area")["median_rent"].shift(4)
+    s["quarter_lag4"] = s.groupby("area")["quarter"].shift(4)
+    ok = (s["quarter"].astype("period[Q]") - s["quarter_lag4"].astype("period[Q]")
+          ).apply(lambda d: getattr(d, "n", None)) == 4
+    s = s[ok]
+    s["yoy_pct"] = (s["median_rent"] / s["rent_lag4"] - 1) * 100
+    return s[["region", "area", "quarter", "median_rent",
+              "count", "yoy_pct"]].reset_index(drop=True)
