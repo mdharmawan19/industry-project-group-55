@@ -18,10 +18,12 @@ Stages
             This is the file the notebooks read (see scripts/listings.py).
 
 Typical use (from the repo's top folder):
-  python3 scripts/scrape_rentcomau.py plan --workers 4
+  python3 scripts/scrape_rentcomau.py plan                       # the 5-way split
+  python3 scripts/scrape_rentcomau.py plan --shard 2/5            # list share 2's suburbs
   python3 scripts/scrape_rentcomau.py test --contact you@student.unimelb.edu.au
-  python3 scripts/scrape_rentcomau.py search --shard 2/4 --worker kerri --contact you@student.unimelb.edu.au
-  python3 scripts/scrape_rentcomau.py status --workers 4
+  python3 scripts/scrape_rentcomau.py search --shard 2/5 --worker scraper2 --contact you@student.unimelb.edu.au
+  python3 scripts/scrape_rentcomau.py details --worker scraper2 --contact you@student.unimelb.edu.au
+  python3 scripts/scrape_rentcomau.py status
   python3 scripts/scrape_rentcomau.py merge
 
 Being a good guest on the site:
@@ -66,6 +68,7 @@ BASE = "https://www.rent.com.au"
 PER_PAGE = 25
 DEFAULT_MAX_PAGES = 12              # 12 x 25 = 300 per suburb, the same cap as the course dataset
 DEFAULT_SNAPSHOT = "2026-09"        # everyone in the group uses the same snapshot name
+GROUP_SIZE = 5                      # the suburbs are split into this many shares (one per person)
 UA_TOKEN = "MAST30034-student-project"
 SUBURBS = config.RAW / "domain" / "Data" / "suburb_summary.csv"
 RENT_DIR = config.RAW / "rentcomau"
@@ -198,6 +201,15 @@ def parse_shard(text):
     if not m or not 1 <= int(m.group(1)) <= int(m.group(2)):
         sys.exit("--shard must look like 2/4 (your share / number of people)")
     return int(m.group(1)), int(m.group(2))
+
+
+def check_shard(args):
+    """Parse --shard and refuse a group size different from GROUP_SIZE (unless --workers overrides it)."""
+    shard, workers = parse_shard(args.shard)
+    if workers != (getattr(args, "workers", None) or GROUP_SIZE):
+        sys.exit(f"The group splits the suburbs into {GROUP_SIZE} shares, so use --shard {shard}/{GROUP_SIZE}. "
+                 f"(Mixing /{workers} and /{GROUP_SIZE} makes shares overlap and skips suburbs.)")
+    return shard, workers
 
 
 # ----------------------------------------------------------------------------
@@ -578,8 +590,16 @@ def run_test(fetch, args):
 
 
 def run_plan(args):
-    workers = args.workers or 4
+    workers = args.workers or GROUP_SIZE
     plan = make_plan(load_suburbs(args.suburbs), workers)
+    if args.shard:                      # just list one share's suburbs
+        shard, n = parse_shard(args.shard)
+        mine = make_plan(load_suburbs(args.suburbs), n).query("shard == @shard")
+        print(f"Share {shard}/{n}: {len(mine)} suburbs, about {mine['est_pages'].sum()} pages "
+              f"(~{mine['est_pages'].sum() * args.delay / 60:.0f} min at {args.delay:.0f}s per request)\n")
+        print(mine[["suburb", "postcode", "listing_count", "est_pages"]]
+              .rename(columns={"listing_count": "domain_2025_listings"}).to_string(index=False))
+        return
     out = snap_dir(args.snapshot)
     out.mkdir(parents=True, exist_ok=True)
     plan.to_csv(out / "plan.csv", index=False)
@@ -591,11 +611,11 @@ def run_plan(args):
     print(f"Plan saved to {out / 'plan.csv'}\n\nEach person runs (from the repo's top folder):")
     for shard in range(1, workers + 1):
         print(f"  person {shard}: python3 scripts/scrape_rentcomau.py search --shard {shard}/{workers} "
-              f"--worker <name> --contact <email>")
+              f"--worker scraper{shard} --contact <your uni email>")
 
 
 def run_search(fetch, args):
-    shard, workers = parse_shard(args.shard)
+    shard, workers = check_shard(args)
     plan = make_plan(load_suburbs(args.suburbs), workers)
     mine = plan[plan["shard"] == shard]
     if args.limit:
@@ -778,7 +798,8 @@ def main():
     ap.add_argument("stage", choices=["plan", "test", "search", "details", "status", "merge"])
     ap.add_argument("--snapshot", default=DEFAULT_SNAPSHOT, help="collection name, e.g. 2026-09 (same for everyone)")
     ap.add_argument("--suburbs", default=SUBURBS, help="CSV with suburb, postcode, listing_count")
-    ap.add_argument("--workers", type=int, help="number of people sharing the work (plan, status)")
+    ap.add_argument("--workers", type=int,
+                    help=f"override the group size ({GROUP_SIZE}); only if the whole group agrees")
     ap.add_argument("--shard", help="your share, e.g. 2/4 (search)")
     ap.add_argument("--worker", help="your short name, e.g. kerri (search, details)")
     ap.add_argument("--contact", help="your uni email, shown to the site in the User-Agent")
@@ -793,7 +814,7 @@ def main():
     if args.stage == "plan":
         return run_plan(args)
     if args.stage == "status":
-        table, details = status_table(args.snapshot, args.workers, args.suburbs)
+        table, details = status_table(args.snapshot, args.workers or GROUP_SIZE, args.suburbs)
         print(table.to_string())
         print("details rows per person:", details or "none yet")
         return
@@ -807,9 +828,11 @@ def main():
 
     if args.stage in ("search", "details"):
         if not args.worker or not WORKER_NAME.match(args.worker):
-            sys.exit("Add --worker with a short lowercase name, e.g. --worker kerri")
+            sys.exit("Add --worker with your short lowercase name, e.g. --worker scraper2")
         if args.stage == "search" and not args.shard:
-            sys.exit("Add --shard, e.g. --shard 2/4 (see the plan stage)")
+            sys.exit(f"Add --shard, e.g. --shard 2/{GROUP_SIZE} (see the plan stage)")
+        if args.stage == "search":
+            check_shard(args)            # before any request is sent
     if not args.contact:
         sys.exit("Add --contact your.name@student.unimelb.edu.au so the site knows who is visiting.")
     if args.delay < 3:
