@@ -1,10 +1,31 @@
+"""DFFH Rental Report: Victorian Government rent history (new leases, from bonds lodged).
+
+Two workbooks, same layout (one sheet per property type; per quarter a Count and a Median column):
+  - "Moving annual rent by suburb": 12-month rolling median for ~146 suburb groups ("areas").
+  - "Quarterly median rents by LGA": quarterly median for every council, plus Victoria,
+    Metro and Non-Metro totals.
+"""
+import re
+
 import pandas as pd
 
-def load_dffh_suburb_panel(path):
-    """Reshape the DFFH 'Moving annual median rent by suburb and town'
-    workbook into a long panel.
+# Sheet names differ between the workbooks ("1br flat" vs "1 bedroom flat"); use one set of names
+_TYPE_RE = re.compile(r"(\d)\s*(?:br|bedroom)\s*(flat|house)", re.I)
 
-    Returns: region, area, property_type, quarter, count, median_rent
+
+def standard_type(sheet):
+    """'1br flat' / '1 bedroom flat' -> '1 bedroom flat'; 'All Properties' -> 'All properties'."""
+    m = _TYPE_RE.search(sheet)
+    if m:
+        return f"{m.group(1)} bedroom {m.group(2).lower()}"
+    return "All properties" if "all" in sheet.lower() else sheet.strip()
+
+
+def load_dffh_workbook(path):
+    """Reshape a DFFH Rental Report workbook (suburb or LGA) into a long panel.
+
+    Returns: region, area, property_type, quarter, count, median_rent.
+    `area` is the suburb group (suburb workbook) or the council (LGA workbook).
     """
     xl = pd.ExcelFile(path)
     frames = []
@@ -33,7 +54,7 @@ def load_dffh_suburb_panel(path):
         wide = (long.pivot_table(index=["region", "area", "quarter"],
                                  columns="measure", values="value",
                                  aggfunc="first").reset_index())
-        wide["property_type"] = sheet
+        wide["property_type"] = standard_type(sheet)
         frames.append(wide)
 
     panel = pd.concat(frames, ignore_index=True)
@@ -58,7 +79,7 @@ def load_dffh_suburb_panel(path):
             .reset_index(drop=True))
 
 
-import re
+load_dffh_suburb_panel = load_dffh_workbook   # original name, kept for existing code
 
 # DFFH names that don't match the Domain suburb list
 AREA_ALIASES = {
@@ -137,3 +158,60 @@ def yoy_growth(panel, property_type="All properties", min_count=20):
     s["yoy_pct"] = (s["median_rent"] / s["rent_lag4"] - 1) * 100
     return s[["region", "area", "quarter", "median_rent",
               "count", "yoy_pct"]].reset_index(drop=True)
+
+
+# --------------------------------------------------------------------------------------
+# Additions for the cleaned pipeline (notebook 03)
+# --------------------------------------------------------------------------------------
+LGA_TOTAL_REGIONS = {"Table Total", "METRO NON-METRO"}   # rows that are totals, not councils
+
+
+def split_lga_panel(panel):
+    """LGA workbook panel -> (councils, totals). Totals are DFFH's own Victoria, Metro and
+    Non-Metro series."""
+    is_total = panel["region"].isin(LGA_TOTAL_REGIONS)
+    councils = panel[~is_total].reset_index(drop=True)
+    totals = (panel[is_total & panel["area"].isin(["Victoria", "Metro", "Non-Metro"])]
+              .drop_duplicates(["area", "property_type", "quarter"]).reset_index(drop=True))
+    return councils, totals
+
+
+def build_area_suburb_crosswalk(areas, postcodes, listing_keys=()):
+    """DFFH area -> the suburbs it contains, each with the postcode our listings use.
+
+    Many suburb names have more than one postcode (Wodonga: 3689 and 3690). The postcode is
+    taken from our listings when that suburb appears there (either year), otherwise the
+    first postcode in postcodes.csv.
+
+    Returns: dffh_area, suburb, suburb_u, postcode, suburb_key, postcode_source
+    """
+    xw = area_to_suburbs(areas)
+    xw["suburb_u"] = xw["suburb"].str.upper().str.strip()
+    pc = postcodes.assign(suburb_u=postcodes["suburb"].str.upper().str.strip())
+    candidates = pc.groupby("suburb_u")["postcode"].apply(list).to_dict()
+    listing_keys = set(listing_keys)
+
+    rows = []
+    for r in xw.itertuples():
+        options = candidates.get(r.suburb_u, [])
+        in_listings = [p for p in options if make_suburb_key(r.suburb, p) in listing_keys]
+        if in_listings:
+            postcode, source = in_listings[0], "listings"
+        elif options:
+            postcode, source = options[0], "postcodes.csv"
+        else:
+            postcode, source = None, "not found"
+        rows.append({"dffh_area": r.dffh_area, "suburb": r.suburb, "suburb_u": r.suburb_u,
+                     "postcode": postcode, "postcode_source": source,
+                     "suburb_key": make_suburb_key(r.suburb, postcode) if postcode is not None else None})
+    out = pd.DataFrame(rows)
+    out["postcode"] = out["postcode"].astype("Int64")
+    return out[["dffh_area", "suburb", "suburb_u", "postcode", "suburb_key", "postcode_source"]]
+
+
+def count_weighted_rent(panel, property_type="All properties"):
+    """One series per quarter: area medians averaged with each area's number of new leases as
+    the weight (a mean of medians would give a tiny area the same say as a big one)."""
+    s = panel[(panel["property_type"] == property_type) & panel["median_rent"].notna() & panel["count"].notna()]
+    return s.groupby("quarter").apply(lambda g: (g["median_rent"] * g["count"]).sum() / g["count"].sum(),
+                                      include_groups=False)

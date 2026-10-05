@@ -24,7 +24,7 @@ UA = {"User-Agent": "MAST30034-student-project (University of Melbourne coursewo
 def load_sa2_vic():
     sa2 = gpd.read_file(config.SA2_ZIP)
     sa2 = sa2[(sa2["STE_CODE21"] == "2") & sa2.geometry.notna()]
-    return sa2[["SA2_CODE21", "SA2_NAME21", "SA3_NAME21", "SA4_NAME21", "AREASQKM21", "geometry"]]
+    return sa2[["SA2_CODE21", "SA2_NAME21", "SA3_NAME21", "SA4_NAME21", "GCC_NAME21", "AREASQKM21", "geometry"]]
 
 
 def attach_sa2(df, sa2):
@@ -37,44 +37,31 @@ def attach_sa2(df, sa2):
 
 
 def sa2_features():
-    """Population (history + growth), projection and income per Victorian SA2."""
-    erp = pd.read_excel(config.ABS_ERP, sheet_name="Table 1", header=None)
-    years = erp.iloc[4, 10:].astype(int).tolist()
-    pop = erp.iloc[6:, [0, 8] + list(range(10, 10 + len(years)))].copy()
-    pop.columns = ["STE_CODE", "SA2_CODE21"] + [f"POP_{y}" for y in years]
-    pop = pop[pop["STE_CODE"].astype(str) == "2"].drop(columns="STE_CODE")
-    pop["SA2_CODE21"] = pop["SA2_CODE21"].astype(str).str.replace(r"\.0$", "", regex=True)
-    pop = pop.apply(lambda c: pd.to_numeric(c, errors="coerce") if c.name != "SA2_CODE21" else c)
-    pop["POP_GROWTH_2020_2025"] = (pop["POP_2025"] / pop["POP_2020"].replace(0, np.nan)) ** (1 / 5) - 1
+    """Population, Victoria in Future 2023 projection, income, and Greater Melbourne vs the rest
+    of Victoria, for every Victorian SA2.
 
-    if config.VIF_SA2.exists():   # official Victoria in Future 2023 projections, when available
-        vif = pd.read_excel(config.VIF_SA2, sheet_name="Total_Population", header=9)
-        vif = vif[vif["Region Type"] == "SA2"].rename(columns={"SA2  code": "SA2_CODE21"})
-        vif["SA2_CODE21"] = vif["SA2_CODE21"].astype(str).str.replace(r"\.0$", "", regex=True)
-        vif["POP_PROJ_2031"] = pd.to_numeric(vif[2031], errors="coerce")
-        vif["POP_PROJ_GROWTH_2026_2031"] = (vif[2031] / vif[2026]) ** (1 / 5) - 1
-        vif["POP_PROJ_SOURCE"] = "VIF2023"
-        pop = pop.merge(vif[["SA2_CODE21", "POP_PROJ_2031", "POP_PROJ_GROWTH_2026_2031", "POP_PROJ_SOURCE"]],
-                        on="SA2_CODE21", how="left")
-    else:                         # fallback: continue each SA2's 2020-25 trend to 2031
-        pop["POP_PROJ_GROWTH_2026_2031"] = pop["POP_GROWTH_2020_2025"]
-        pop["POP_PROJ_2031"] = pop["POP_2025"] * (1 + pop["POP_GROWTH_2020_2025"]) ** 6
-        pop["POP_PROJ_SOURCE"] = "ABS ERP 2020-25 trend (VIF2023 file not found)"
-
-    inc = pd.read_excel(config.ABS_INCOME, sheet_name="Table 1.4", header=None).iloc[7:]
-    inc = inc[[0, 6, 17, 21, 26]]
-    inc.columns = ["SA2_CODE21", "EARNERS_2022_23", "MEDIAN_INCOME_2018_19",
-                   "MEDIAN_INCOME_2022_23", "MEAN_INCOME_2022_23"]
-    inc["SA2_CODE21"] = inc["SA2_CODE21"].astype(str).str.replace(r"\.0$", "", regex=True)
-    inc = inc[inc["SA2_CODE21"].str.match(r"^2\d{8}$")]
-    for c in inc.columns[1:]:
-        inc[c] = pd.to_numeric(inc[c], errors="coerce")
-    inc["INCOME_GROWTH_2019_2023"] = (inc["MEDIAN_INCOME_2022_23"] / inc["MEDIAN_INCOME_2018_19"]) ** 0.25 - 1
-
-    keep = ["SA2_CODE21", "POP_2025", "POP_GROWTH_2020_2025", "POP_PROJ_2031",
-            "POP_PROJ_GROWTH_2026_2031", "POP_PROJ_SOURCE"]
-    out = pop[keep].merge(inc, on="SA2_CODE21", how="left")
-    out.to_parquet(config.SA2_FEATURES, index=False)
+    The SA2 data is built once, by notebooks/04_abs_sa2_crosswalk.ipynb
+    (data/curated/sa2_features.csv). This function only reads it, turns growth over a period
+    into growth per year, and adds the Greater Melbourne label from the SA2 boundary file.
+    """
+    f = pd.read_csv(config.SA2_FEATURES, dtype={"SA2_CODE21": str})
+    per_year = lambda total, years: (1 + total) ** (1 / years) - 1
+    out = pd.DataFrame({
+        "SA2_CODE21": f["SA2_CODE21"],
+        "POP_2025": f["POP_2025"],
+        "POP_GROWTH_2021_2025": per_year(f["POP_GROWTH_2021_2025"], 4),          # % a year
+        "POP_PROJ_2031": f["VIF_POP_2031"],
+        "POP_PROJ_GROWTH_2026_2031": per_year(f["VIF_GROWTH_2026_2031"], 5),     # % a year, VIF2023
+        "EARNERS_2022_23": f["EARNERS_2022_23"],
+        "MEDIAN_INCOME_2018_19": f["MEDIAN_INCOME_2018_19"],
+        "MEDIAN_INCOME_2022_23": f["MEDIAN_INCOME_2022_23"],
+        "MEAN_INCOME_2022_23": f["MEAN_INCOME_2022_23"],
+        "INCOME_GROWTH_2019_2023": per_year(f["INCOME_GROWTH_2018_19_2022_23"], 4),
+    }).replace([np.inf, -np.inf], np.nan)
+    out["POP_PROJ_SOURCE"] = "VIF2023"
+    gcc = gpd.read_file(config.SA2_ZIP, ignore_geometry=True)[["SA2_CODE21", "GCC_NAME21"]]
+    out = out.merge(gcc, on="SA2_CODE21", how="left")
+    out["is_metro"] = out["GCC_NAME21"].eq("Greater Melbourne")
     return out
 
 
