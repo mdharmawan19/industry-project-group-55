@@ -38,9 +38,8 @@ DFFH_LGA_XLSX = max(EXTERNAL.glob("quarterly-median-rents*lga*.xlsx"), key=lambd
 
 # --- Curated outputs ------------------------------------------------------------------
 LISTINGS = CURATED / "listings.parquet"                  # all snapshots, shared columns
-LISTING_SA2 = CURATED / "listing_sa2.parquet"          # built by 04_abs_sa2_crosswalk: each listing's SA2
-SA2_FEATURES = CURATED / "sa2_features.csv"            # built by 04_abs_sa2_crosswalk (VIF2023 included)
-LISTINGS_FINAL = CURATED / "listings_final.parquet"    # built by 05_geospatial_routing: + SA2 and location
+LISTING_SA2 = CURATED / "listing_sa2.parquet"          # built by 04: listings + SA2 + population/income/VIF2023
+LISTINGS_FINAL = CURATED / "listings_final.parquet"    # built by 05_geospatial_routing: + location features
 DFFH_PANEL = CURATED / "dffh_rent_panel.parquet"
 DFFH_CROSSWALK = CURATED / "dffh_area_suburb_crosswalk.csv"
 DFFH_YOY = CURATED / "dffh_yoy_growth.parquet"

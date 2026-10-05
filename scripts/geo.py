@@ -36,35 +36,6 @@ def attach_sa2(df, sa2):
     return pd.DataFrame(joined.drop(columns=["geometry", "index_right"]))
 
 
-def sa2_features():
-    """Population, Victoria in Future 2023 projection, income, and Greater Melbourne vs the rest
-    of Victoria, for every Victorian SA2.
-
-    The SA2 data is built once, by notebooks/04_abs_sa2_crosswalk.ipynb
-    (data/curated/sa2_features.csv). This function only reads it, turns growth over a period
-    into growth per year, and adds the Greater Melbourne label from the SA2 boundary file.
-    """
-    f = pd.read_csv(config.SA2_FEATURES, dtype={"SA2_CODE21": str})
-    per_year = lambda total, years: (1 + total) ** (1 / years) - 1
-    out = pd.DataFrame({
-        "SA2_CODE21": f["SA2_CODE21"],
-        "POP_2025": f["POP_2025"],
-        "POP_GROWTH_2021_2025": per_year(f["POP_GROWTH_2021_2025"], 4),          # % a year
-        "POP_PROJ_2031": f["VIF_POP_2031"],
-        "POP_PROJ_GROWTH_2026_2031": per_year(f["VIF_GROWTH_2026_2031"], 5),     # % a year, VIF2023
-        "EARNERS_2022_23": f["EARNERS_2022_23"],
-        "MEDIAN_INCOME_2018_19": f["MEDIAN_INCOME_2018_19"],
-        "MEDIAN_INCOME_2022_23": f["MEDIAN_INCOME_2022_23"],
-        "MEAN_INCOME_2022_23": f["MEAN_INCOME_2022_23"],
-        "INCOME_GROWTH_2019_2023": per_year(f["INCOME_GROWTH_2018_19_2022_23"], 4),
-    }).replace([np.inf, -np.inf], np.nan)
-    out["POP_PROJ_SOURCE"] = "VIF2023"
-    gcc = gpd.read_file(config.SA2_ZIP, ignore_geometry=True)[["SA2_CODE21", "GCC_NAME21"]]
-    out = out.merge(gcc, on="SA2_CODE21", how="left")
-    out["is_metro"] = out["GCC_NAME21"].eq("Greater Melbourne")
-    return out
-
-
 # ------------------------------------------------------------------ points of interest
 def train_stations():
     """Metro (folder 1) and V/Line (folder 2) train stations from the PTV GTFS feed."""
