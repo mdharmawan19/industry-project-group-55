@@ -27,15 +27,6 @@ def load_sa2_vic():
     return sa2[["SA2_CODE21", "SA2_NAME21", "SA3_NAME21", "SA4_NAME21", "GCC_NAME21", "AREASQKM21", "geometry"]]
 
 
-def attach_sa2(df, sa2):
-    """Add the SA2 district each listing's point falls inside."""
-    pts = gpd.GeoDataFrame(df, geometry=gpd.points_from_xy(df["lon"], df["lat"]), crs="EPSG:4326")
-    joined = gpd.sjoin(pts.to_crs(sa2.crs), sa2[["SA2_CODE21", "SA2_NAME21", "geometry"]],
-                       how="left", predicate="within")
-    joined = joined[~joined.index.duplicated()]          # points exactly on a border
-    return pd.DataFrame(joined.drop(columns=["geometry", "index_right"]))
-
-
 # ------------------------------------------------------------------ points of interest
 def train_stations():
     """Metro (folder 1) and V/Line (folder 2) train stations from the PTV GTFS feed."""

@@ -10,7 +10,6 @@ and Q2 in `03_dffh_panel`.
 |---|---|---|---|
 | 02 | `02_scraping` | rent.com.au (each person scrapes a share with `scripts/scrape_rentcomau.py`) | `data/raw/rentcomau/2026-09/vic_rentals_rentcomau.csv` |
 | 01 | `01_data_curation` | Domain 2025 CSV, rent.com.au 2026 CSV | `data/curated/listings.parquet` (one row per listing, both years, 62 columns) |
-| 02b | `02b_geo_visualisation` | `listings.parquet` | Sprint 1 maps in `plots/` |
 | 03 | `03_dffh_panel` (**Q2**) | DFFH "Moving annual median rent by suburb and town" workbook, `listings.parquet` | 5-year rent forecast to 2030Q3, chosen by back-test: `dffh_rent_panel.parquet`, `dffh_area_suburb_crosswalk.csv`, `dffh_yoy_growth.parquet`, `forecast_backtest.csv`, `rent_forecast_areas.csv`, `plots/forecast_top10.png`, `plots/dffh_rent_and_growth.png` |
 | 04 | `04_abs_sa2_crosswalk` | `listings.parquet`, DFFH crosswalk, SA2 boundaries, ABS population and income, VIF2023 | `listing_sa2.parquet` (85 columns), `sa2_features.parquet`, `suburb_sa2_crosswalk.csv`, SA2 maps |
 | 05 | `05_geospatial_routing` | `listing_sa2.parquet`, PTV GTFS, school locations, OpenStreetMap, OSRM routes | `listings_final.parquet` (111 columns), station driving-distance map |
