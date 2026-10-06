@@ -24,7 +24,7 @@ UA = {"User-Agent": "MAST30034-student-project (University of Melbourne coursewo
 def load_sa2_vic():
     sa2 = gpd.read_file(config.SA2_ZIP)
     sa2 = sa2[(sa2["STE_CODE21"] == "2") & sa2.geometry.notna()]
-    return sa2[["SA2_CODE21", "SA2_NAME21", "SA3_NAME21", "SA4_NAME21", "AREASQKM21", "geometry"]]
+    return sa2[["SA2_CODE21", "SA2_NAME21", "SA3_NAME21", "SA4_NAME21", "GCC_NAME21", "AREASQKM21", "geometry"]]
 
 
 def attach_sa2(df, sa2):
@@ -34,48 +34,6 @@ def attach_sa2(df, sa2):
                        how="left", predicate="within")
     joined = joined[~joined.index.duplicated()]          # points exactly on a border
     return pd.DataFrame(joined.drop(columns=["geometry", "index_right"]))
-
-
-def sa2_features():
-    """Population (history + growth), projection and income per Victorian SA2."""
-    erp = pd.read_excel(config.ABS_ERP, sheet_name="Table 1", header=None)
-    years = erp.iloc[4, 10:].astype(int).tolist()
-    pop = erp.iloc[6:, [0, 8] + list(range(10, 10 + len(years)))].copy()
-    pop.columns = ["STE_CODE", "SA2_CODE21"] + [f"POP_{y}" for y in years]
-    pop = pop[pop["STE_CODE"].astype(str) == "2"].drop(columns="STE_CODE")
-    pop["SA2_CODE21"] = pop["SA2_CODE21"].astype(str).str.replace(r"\.0$", "", regex=True)
-    pop = pop.apply(lambda c: pd.to_numeric(c, errors="coerce") if c.name != "SA2_CODE21" else c)
-    pop["POP_GROWTH_2020_2025"] = (pop["POP_2025"] / pop["POP_2020"].replace(0, np.nan)) ** (1 / 5) - 1
-
-    if config.VIF_SA2.exists():   # official Victoria in Future 2023 projections, when available
-        vif = pd.read_excel(config.VIF_SA2, sheet_name="Total_Population", header=9)
-        vif = vif[vif["Region Type"] == "SA2"].rename(columns={"SA2  code": "SA2_CODE21"})
-        vif["SA2_CODE21"] = vif["SA2_CODE21"].astype(str).str.replace(r"\.0$", "", regex=True)
-        vif["POP_PROJ_2031"] = pd.to_numeric(vif[2031], errors="coerce")
-        vif["POP_PROJ_GROWTH_2026_2031"] = (vif[2031] / vif[2026]) ** (1 / 5) - 1
-        vif["POP_PROJ_SOURCE"] = "VIF2023"
-        pop = pop.merge(vif[["SA2_CODE21", "POP_PROJ_2031", "POP_PROJ_GROWTH_2026_2031", "POP_PROJ_SOURCE"]],
-                        on="SA2_CODE21", how="left")
-    else:                         # fallback: continue each SA2's 2020-25 trend to 2031
-        pop["POP_PROJ_GROWTH_2026_2031"] = pop["POP_GROWTH_2020_2025"]
-        pop["POP_PROJ_2031"] = pop["POP_2025"] * (1 + pop["POP_GROWTH_2020_2025"]) ** 6
-        pop["POP_PROJ_SOURCE"] = "ABS ERP 2020-25 trend (VIF2023 file not found)"
-
-    inc = pd.read_excel(config.ABS_INCOME, sheet_name="Table 1.4", header=None).iloc[7:]
-    inc = inc[[0, 6, 17, 21, 26]]
-    inc.columns = ["SA2_CODE21", "EARNERS_2022_23", "MEDIAN_INCOME_2018_19",
-                   "MEDIAN_INCOME_2022_23", "MEAN_INCOME_2022_23"]
-    inc["SA2_CODE21"] = inc["SA2_CODE21"].astype(str).str.replace(r"\.0$", "", regex=True)
-    inc = inc[inc["SA2_CODE21"].str.match(r"^2\d{8}$")]
-    for c in inc.columns[1:]:
-        inc[c] = pd.to_numeric(inc[c], errors="coerce")
-    inc["INCOME_GROWTH_2019_2023"] = (inc["MEDIAN_INCOME_2022_23"] / inc["MEDIAN_INCOME_2018_19"]) ** 0.25 - 1
-
-    keep = ["SA2_CODE21", "POP_2025", "POP_GROWTH_2020_2025", "POP_PROJ_2031",
-            "POP_PROJ_GROWTH_2026_2031", "POP_PROJ_SOURCE"]
-    out = pop[keep].merge(inc, on="SA2_CODE21", how="left")
-    out.to_parquet(config.SA2_FEATURES, index=False)
-    return out
 
 
 # ------------------------------------------------------------------ points of interest
@@ -97,6 +55,30 @@ def train_stations():
     return st.groupby("name", as_index=False)[["lat", "lon"]].mean()
 
 
+def _gtfs_stops(folders):
+    """Stops from the PTV GTFS feed. Most stops are listed once per direction (one on each side
+    of the road) under the same name; those are merged into one point."""
+    frames = []
+    with zipfile.ZipFile(config.GTFS_ZIP) as outer:
+        for mode in folders:
+            with zipfile.ZipFile(io.BytesIO(outer.read(f"{mode}/google_transit.zip"))) as inner:
+                frames.append(pd.read_csv(inner.open("stops.txt"))[["stop_name", "stop_lat", "stop_lon"]])
+    st = pd.concat(frames).rename(columns={"stop_name": "name", "stop_lat": "lat", "stop_lon": "lon"})
+    st = st.assign(lat_area=st["lat"].round(2), lon_area=st["lon"].round(2))   # same name, same ~1 km area
+    return (st.groupby(["name", "lat_area", "lon_area"], as_index=False)[["lat", "lon"]].mean()
+              .drop(columns=["lat_area", "lon_area"]))
+
+
+def tram_stops():
+    """Melbourne tram stops (GTFS folder 3)."""
+    return _gtfs_stops(["3"])
+
+
+def bus_stops():
+    """Metropolitan (folder 4) and regional town (folder 6) bus stops."""
+    return _gtfs_stops(["4", "6"])
+
+
 def schools():
     s = pd.read_csv(config.SCHOOLS, encoding="utf-8-sig")
     return s.rename(columns={"School_Name": "name", "Y": "lat", "X": "lon",
@@ -107,7 +89,12 @@ OSM_QUERIES = {   # OpenStreetMap tags for each amenity group (Victoria only)
     "parks": 'nwr["leisure"~"^(park|nature_reserve)$"]',
     "shopping": 'nwr["shop"~"^(mall|department_store|supermarket)$"]',
     "entertainment": 'nwr["amenity"~"^(cinema|theatre|nightclub|pub|bar|restaurant|cafe|arts_centre)$"]',
+    "hospitals": 'nwr["amenity"="hospital"]',
 }
+# Public Overpass servers (wiki.openstreetmap.org/wiki/Overpass_API#Public_Overpass_API_instances).
+# The next one is tried only when a server is overloaded (502/503/504), never after a refusal or rate limit.
+OVERPASS_SERVERS = ["https://overpass-api.de/api/interpreter",
+                    "https://overpass.private.coffee/api/interpreter"]
 
 
 def osm_pois(group, refresh=False):
@@ -117,8 +104,11 @@ def osm_pois(group, refresh=False):
         return pd.read_csv(path)
     query = (f'[out:json][timeout:300];area["ISO3166-2"="AU-VIC"]->.vic;'
              f'({OSM_QUERIES[group]}(area.vic););out center tags;')
-    r = requests.post("https://overpass-api.de/api/interpreter", data={"data": query},
-                      headers=UA, timeout=400)
+    for server in OVERPASS_SERVERS:
+        r = requests.post(server, data={"data": query}, headers=UA, timeout=400)
+        if r.status_code not in (502, 503, 504):
+            break
+        time.sleep(5)
     r.raise_for_status()
     rows = []
     for el in r.json()["elements"]:
