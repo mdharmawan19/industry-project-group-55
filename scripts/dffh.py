@@ -1,9 +1,9 @@
 """DFFH Rental Report: Victorian Government rent history (new leases, from bonds lodged).
 
-Two workbooks, same layout (one sheet per property type; per quarter a Count and a Median column):
-  - "Moving annual rent by suburb": 12-month rolling median for ~146 suburb groups ("areas").
-  - "Quarterly median rents by LGA": quarterly median for every council, plus Victoria,
-    Metro and Non-Metro totals.
+Notebook 03 uses the "Moving annual median rent by suburb and town" workbook: a 12-month rolling
+median for ~146 suburb groups ("areas"), one sheet per property type, with a Count and a Median
+column per quarter. The council-level "Quarterly median rents by LGA" workbook has the same layout
+and also loads with load_dffh_workbook, but is not used.
 """
 import re
 
@@ -163,19 +163,6 @@ def yoy_growth(panel, property_type="All properties", min_count=20):
 # --------------------------------------------------------------------------------------
 # Additions for the cleaned pipeline (notebook 03)
 # --------------------------------------------------------------------------------------
-LGA_TOTAL_REGIONS = {"Table Total", "METRO NON-METRO"}   # rows that are totals, not councils
-
-
-def split_lga_panel(panel):
-    """LGA workbook panel -> (councils, totals). Totals are DFFH's own Victoria, Metro and
-    Non-Metro series."""
-    is_total = panel["region"].isin(LGA_TOTAL_REGIONS)
-    councils = panel[~is_total].reset_index(drop=True)
-    totals = (panel[is_total & panel["area"].isin(["Victoria", "Metro", "Non-Metro"])]
-              .drop_duplicates(["area", "property_type", "quarter"]).reset_index(drop=True))
-    return councils, totals
-
-
 def build_area_suburb_crosswalk(areas, postcodes, listing_keys=()):
     """DFFH area -> the suburbs it contains, each with the postcode our listings use.
 

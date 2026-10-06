@@ -31,10 +31,10 @@ GTFS_ZIP = EXTERNAL / "gtfs.zip"                                            # PT
 SCHOOLS = EXTERNAL / "dv402-SchoolLocations2025.csv"                        # Vic Dept of Education
 OSM_DIR = EXTERNAL / "osm"                                                  # OpenStreetMap extracts
 ROUTE_CACHE = CURATED / "route_cache.parquet"                               # saved car routes
-# DFFH Rental Report workbooks (dffh.vic.gov.au/publications/rental-report). Matched by name so a
-# newer quarter's download works without code changes; the most recently downloaded one is used.
+# DFFH Rental Report "Moving annual median rent by suburb and town" workbook
+# (dffh.vic.gov.au/publications/rental-report). Matched by name so a newer quarter's download works
+# without code changes; the most recently downloaded one is used.
 DFFH_SUBURB_XLSX = max(EXTERNAL.glob("Moving annual*rent*suburb*.xlsx"), key=lambda p: p.stat().st_mtime, default=None)
-DFFH_LGA_XLSX = max(EXTERNAL.glob("quarterly-median-rents*.xlsx"), key=lambda p: p.stat().st_mtime, default=None)
 
 # --- Curated outputs ------------------------------------------------------------------
 LISTINGS = CURATED / "listings.parquet"                  # all snapshots, shared columns
@@ -43,8 +43,6 @@ LISTINGS_FINAL = CURATED / "listings_final.parquet"    # built by 05_geospatial_
 DFFH_PANEL = CURATED / "dffh_rent_panel.parquet"
 DFFH_CROSSWALK = CURATED / "dffh_area_suburb_crosswalk.csv"
 DFFH_YOY = CURATED / "dffh_yoy_growth.parquet"
-DFFH_LGA_PANEL = CURATED / "dffh_lga_panel.parquet"
-FORECAST = CURATED / "rent_forecast_5yr.parquet"
 
 MELBOURNE_CBD = (-37.8136, 144.9631)   # lat, lon (Flinders St / Swanston St corner)
 
