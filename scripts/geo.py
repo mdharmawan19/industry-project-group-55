@@ -55,6 +55,30 @@ def train_stations():
     return st.groupby("name", as_index=False)[["lat", "lon"]].mean()
 
 
+def _gtfs_stops(folders):
+    """Stops from the PTV GTFS feed. Most stops are listed once per direction (one on each side
+    of the road) under the same name; those are merged into one point."""
+    frames = []
+    with zipfile.ZipFile(config.GTFS_ZIP) as outer:
+        for mode in folders:
+            with zipfile.ZipFile(io.BytesIO(outer.read(f"{mode}/google_transit.zip"))) as inner:
+                frames.append(pd.read_csv(inner.open("stops.txt"))[["stop_name", "stop_lat", "stop_lon"]])
+    st = pd.concat(frames).rename(columns={"stop_name": "name", "stop_lat": "lat", "stop_lon": "lon"})
+    st = st.assign(lat_area=st["lat"].round(2), lon_area=st["lon"].round(2))   # same name, same ~1 km area
+    return (st.groupby(["name", "lat_area", "lon_area"], as_index=False)[["lat", "lon"]].mean()
+              .drop(columns=["lat_area", "lon_area"]))
+
+
+def tram_stops():
+    """Melbourne tram stops (GTFS folder 3)."""
+    return _gtfs_stops(["3"])
+
+
+def bus_stops():
+    """Metropolitan (folder 4) and regional town (folder 6) bus stops."""
+    return _gtfs_stops(["4", "6"])
+
+
 def schools():
     s = pd.read_csv(config.SCHOOLS, encoding="utf-8-sig")
     return s.rename(columns={"School_Name": "name", "Y": "lat", "X": "lon",
@@ -65,7 +89,12 @@ OSM_QUERIES = {   # OpenStreetMap tags for each amenity group (Victoria only)
     "parks": 'nwr["leisure"~"^(park|nature_reserve)$"]',
     "shopping": 'nwr["shop"~"^(mall|department_store|supermarket)$"]',
     "entertainment": 'nwr["amenity"~"^(cinema|theatre|nightclub|pub|bar|restaurant|cafe|arts_centre)$"]',
+    "hospitals": 'nwr["amenity"="hospital"]',
 }
+# Public Overpass servers (wiki.openstreetmap.org/wiki/Overpass_API#Public_Overpass_API_instances).
+# The next one is tried only when a server is overloaded (502/503/504), never after a refusal or rate limit.
+OVERPASS_SERVERS = ["https://overpass-api.de/api/interpreter",
+                    "https://overpass.private.coffee/api/interpreter"]
 
 
 def osm_pois(group, refresh=False):
@@ -75,8 +104,11 @@ def osm_pois(group, refresh=False):
         return pd.read_csv(path)
     query = (f'[out:json][timeout:300];area["ISO3166-2"="AU-VIC"]->.vic;'
              f'({OSM_QUERIES[group]}(area.vic););out center tags;')
-    r = requests.post("https://overpass-api.de/api/interpreter", data={"data": query},
-                      headers=UA, timeout=400)
+    for server in OVERPASS_SERVERS:
+        r = requests.post(server, data={"data": query}, headers=UA, timeout=400)
+        if r.status_code not in (502, 503, 504):
+            break
+        time.sleep(5)
     r.raise_for_status()
     rows = []
     for el in r.json()["elements"]:
