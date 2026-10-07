@@ -184,3 +184,23 @@ def summarise(long, bt, method, level=0.8):
     s["growth_pa_low"] = ((s["rent_5y_low"] / s["rent_now"]) ** (1 / 5) - 1) * 100
     s["growth_pa_high"] = ((s["rent_5y_high"] / s["rent_now"]) ** (1 / 5) - 1) * 100
     return s.sort_values("growth_pa_pct", ascending=False).reset_index()
+
+
+def what_if(long, summary, weeks_per_quarter=13):
+    """'What if you had rented out one home in each area from the last actual quarter (2025Q3)?'
+
+    One row per area: rent collected over the 5 forecast years (income_5y), and how much of that comes from rent
+    growth, i.e. compared with rent staying at today's level (extra_from_growth). The _low/_high columns use the
+    80% range from summarise(): the forecast path is scaled smoothly so it ends at rent_5y_low / rent_5y_high.
+    Rent income only, before costs; not a return on investment (no purchase prices)."""
+    f = long[long["kind"] == "forecast"].copy()
+    f["k"] = f.groupby("area").cumcount() + 1                      # quarters ahead: 1..H
+    s = summary.set_index("area")
+    f = f.join(s[["rent_now", "rent_5y", "rent_5y_low", "rent_5y_high"]], on="area")
+    out = pd.DataFrame(index=s.index)
+    flat = s["rent_now"] * weeks_per_quarter * H                   # rent never changes
+    for suffix, end in [("", "rent_5y"), ("_low", "rent_5y_low"), ("_high", "rent_5y_high")]:
+        path = f["rent"] * (f[end] / f["rent_5y"]) ** (f["k"] / H)
+        out["income_5y" + suffix] = (path * weeks_per_quarter).groupby(f["area"]).sum()
+        out["extra_from_growth" + suffix] = out["income_5y" + suffix] - flat
+    return out
