@@ -29,8 +29,8 @@ shared publicly). Put the files here:
 |---|---|
 | Domain 2025 course data (`vic_rentals_all.csv`, `postcodes.csv`) | `data/raw/domain/Data/` |
 | rent.com.au 2026 (merged by 02) | `data/raw/rentcomau/2026-09/vic_rentals_rentcomau.csv` |
-| ABS SA2 2021 boundaries (`SA2_2021_AUST_SHP_GDA2020.zip`), PTV GTFS (`gtfs.zip`), school locations (`dv402-SchoolLocations2025.csv`), DFFH "Moving annual median rent by suburb and town" workbook (`.xlsx`, from dffh.vic.gov.au/publications/rental-report) | `data/raw/external/` |
-| For notebook 04: `SA2_2021_AUST_GDA2020.shp` (+ `.dbf`, `.prj`, `.shx`, `.xml`) | `data/raw/sa2_boundaries/` |
+| PTV GTFS (`gtfs.zip`), school locations (`dv402-SchoolLocations2025.csv`), DFFH "Moving annual median rent by suburb and town" workbook (`.xlsx`, from dffh.vic.gov.au/publications/rental-report) | `data/raw/external/` |
+| For notebooks 04 and 05: ABS SA2 2021 boundaries, `SA2_2021_AUST_GDA2020.shp` (+ `.dbf`, `.prj`, `.shx`, `.xml`) | `data/raw/sa2_boundaries/` |
 | For notebook 04: `32180DS0003_2001-25.xlsx` (ABS population) | `data/raw/abs_population/` |
 | For notebook 04: `Table 1 - Total income, earners and summary statistics by geography, 2018-19 to 2022-23.xlsx` | `data/raw/abs_income/` |
 | For notebook 04: `VIF2023_SA2_Pop_Hhold_Dwelling_Projections_to_2036_Release_2.xlsx` | `data/raw/vic_population_projections/` |

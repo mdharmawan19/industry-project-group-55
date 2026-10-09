@@ -22,7 +22,7 @@ UA = {"User-Agent": "MAST30034-student-project (University of Melbourne coursewo
 
 # ----------------------------------------------------------------------------- SA2
 def load_sa2_vic():
-    sa2 = gpd.read_file(config.SA2_ZIP)
+    sa2 = gpd.read_file(config.SA2_SHP)
     sa2 = sa2[(sa2["STE_CODE21"] == "2") & sa2.geometry.notna()]
     return sa2[["SA2_CODE21", "SA2_NAME21", "SA3_NAME21", "SA4_NAME21", "GCC_NAME21", "AREASQKM21", "geometry"]]
 

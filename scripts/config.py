@@ -23,7 +23,7 @@ POSTCODES = RAW / "domain" / "Data" / "postcodes.csv"
 RENTCOMAU_2026 = RAW / "rentcomau" / "2026-09" / "vic_rentals_rentcomau.csv"
 
 # --- External datasets (all public) -------------------------------------------------
-SA2_ZIP = EXTERNAL / "SA2_2021_AUST_SHP_GDA2020.zip"                      # ABS ASGS 2021
+SA2_SHP = RAW / "sa2_boundaries" / "SA2_2021_AUST_GDA2020.shp"            # ABS ASGS 2021 (same copy as 04)
 ABS_ERP = EXTERNAL / "32180DS0003_2001-25.xlsx"                             # ABS population 2001-25
 ABS_INCOME = EXTERNAL / "abs_income_table1_2018-19_to_2022-23.xlsx"        # ABS personal income
 VIF_SA2 = EXTERNAL / "VIF2023_SA2_Pop_Hhold_Dwelling_Projections_to_2036_Release_2.xlsx"
