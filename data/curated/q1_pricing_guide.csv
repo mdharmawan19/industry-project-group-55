@@ -1,0 +1,24 @@
+,change,metro $/wk,regional $/wk,linear $/wk (metro),linear 95% CI ($/wk),same direction,driver,who can act,marker
+Bedrooms,one more,98.0,46.0,99.0,,True,robust,fixed,
+Bathrooms,one more,81.0,65.0,97.0,,True,robust,fixed,
+Pool,without → with,70.0,80.0,64.0,+16 to +102,True,likely,agent should mention,marker
+Furnished,without → with,48.0,46.0,79.0,+34 to +109,True,robust,landlord could add,
+Study,without → with,29.0,18.0,48.0,+27 to +59,True,robust,agent should mention,
+Car spaces,one more,22.0,7.0,24.0,,True,robust,fixed,
+Dishwasher,without → with,20.0,20.0,22.0,+11 to +30,True,robust,landlord could add,
+Gym,without → with,14.0,7.0,14.0,-20 to +43,True,not supported,agent should mention,marker
+Outdoor entertaining,without → with,14.0,11.0,26.0,+14 to +33,True,likely,agent should mention,
+Balcony deck,without → with,14.0,17.0,30.0,+16 to +40,True,robust,agent should mention,
+Rumpus room,without → with,9.0,5.0,15.0,-6 to +32,True,not supported,agent should mention,
+Secure parking,without → with,8.0,5.0,3.0,-5 to +10,True,likely,agent should mention,marker
+Pets allowed,without → with,8.0,1.0,6.0,-11 to +23,True,likely,landlord could add,
+House (vs apartment/unit),apartment/unit → house,6.0,-1.0,-19.0,,False,likely,fixed,
+Townhouse (vs apartment/unit),apartment/unit → townhouse,-4.0,2.0,13.0,,False,likely,fixed,
+Heating,without → with,-4.0,-1.0,-13.0,-20 to -4,True,likely,landlord could add,
+Security,without → with,3.0,4.0,9.0,-7 to +22,True,likely,landlord could add,marker
+Floorboards,without → with,3.0,1.0,8.0,-3 to +18,True,likely,agent should mention,marker
+Courtyard garden,without → with,2.0,1.0,7.0,-3 to +15,True,not supported,agent should mention,
+Ensuite,without → with,2.0,-0.0,-4.0,-16 to +9,False,likely,agent should mention,
+Broadband,without → with,-2.0,-9.0,-8.0,-25 to +12,True,not supported,landlord could add,marker
+Air conditioning,without → with,1.0,-0.0,1.0,-4 to +7,True,not supported,landlord could add,
+Shed,without → with,-0.0,-0.0,-4.0,-14 to +9,True,not supported,agent should mention,

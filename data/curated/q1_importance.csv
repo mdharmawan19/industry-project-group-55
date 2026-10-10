@@ -1,0 +1,154 @@
+,,,,,rise (%),rise (%),rise ($/wk),rise ($/wk)
+,,,,,mean,std,mean,std
+method,model,subset,level,name,,,,
+removed and refitted,Gradient boosting,all,group,Area socio-economics,4.09,4.51,4.18,4.98
+removed and refitted,Gradient boosting,all,group,City access,10.28,4.19,9.29,3.21
+removed and refitted,Gradient boosting,all,group,Comfort and appliances,0.88,1.08,0.76,0.95
+removed and refitted,Gradient boosting,all,group,Dining and entertainment,1.74,0.97,1.6,0.83
+removed and refitted,Gradient boosting,all,group,Local services,0.72,1.07,0.73,1.02
+removed and refitted,Gradient boosting,all,group,Outdoor and extras,4.4,2.34,3.9,1.83
+removed and refitted,Gradient boosting,all,group,Property type,1.51,1.19,1.32,1.01
+removed and refitted,Gradient boosting,all,group,Size,40.4,6.28,37.0,3.12
+removed and refitted,Gradient boosting,all,group,Transport,0.36,0.45,0.3,0.4
+removed and refitted,Gradient boosting,metro,group,Area socio-economics,5.22,5.4,5.6,6.44
+removed and refitted,Gradient boosting,metro,group,City access,8.77,6.01,7.97,5.19
+removed and refitted,Gradient boosting,metro,group,Comfort and appliances,0.64,1.26,0.55,1.21
+removed and refitted,Gradient boosting,metro,group,Dining and entertainment,1.85,0.85,1.78,0.77
+removed and refitted,Gradient boosting,metro,group,Local services,0.71,1.28,0.76,1.21
+removed and refitted,Gradient boosting,metro,group,Outdoor and extras,4.34,2.2,3.99,1.72
+removed and refitted,Gradient boosting,metro,group,Property type,1.45,1.31,1.33,1.19
+removed and refitted,Gradient boosting,metro,group,Size,42.76,6.96,40.78,2.71
+removed and refitted,Gradient boosting,metro,group,Transport,0.47,0.2,0.44,0.13
+removed and refitted,Gradient boosting,regional,group,Area socio-economics,-5.04,6.27,-3.69,4.43
+removed and refitted,Gradient boosting,regional,group,City access,24.2,21.56,16.66,15.44
+removed and refitted,Gradient boosting,regional,group,Comfort and appliances,2.8,1.24,1.95,0.9
+removed and refitted,Gradient boosting,regional,group,Dining and entertainment,0.98,1.84,0.61,1.21
+removed and refitted,Gradient boosting,regional,group,Local services,0.65,2.61,0.53,1.78
+removed and refitted,Gradient boosting,regional,group,Outdoor and extras,5.08,4.92,3.36,2.99
+removed and refitted,Gradient boosting,regional,group,Property type,1.85,0.97,1.3,0.76
+removed and refitted,Gradient boosting,regional,group,Size,23.71,10.44,16.12,5.97
+removed and refitted,Gradient boosting,regional,group,Transport,-0.62,2.88,-0.48,2.02
+shuffled,Gradient boosting,all,feature,INCOME_GROWTH_2018_19_2022_23,4.66,2.23,4.21,1.88
+shuffled,Gradient boosting,all,feature,MEDIAN_INCOME_2022_23,16.27,2.42,14.85,2.13
+shuffled,Gradient boosting,all,feature,POP_GROWTH_2021_2025,3.46,1.45,3.17,1.34
+shuffled,Gradient boosting,all,feature,VIF_GROWTH_2026_2031,4.91,3.11,4.63,3.36
+shuffled,Gradient boosting,all,feature,bathrooms,20.81,1.43,19.09,2.39
+shuffled,Gradient boosting,all,feature,bedrooms,81.61,14.55,73.87,8.54
+shuffled,Gradient boosting,all,feature,bus_stop_km,0.13,0.19,0.12,0.17
+shuffled,Gradient boosting,all,feature,carspaces,4.25,1.52,3.87,1.3
+shuffled,Gradient boosting,all,feature,cbd_route_km,55.36,7.5,50.3,4.53
+shuffled,Gradient boosting,all,feature,entertainment_within_1km,15.52,4.86,14.03,4.1
+shuffled,Gradient boosting,all,feature,has_air_conditioning,0.06,0.07,0.06,0.07
+shuffled,Gradient boosting,all,feature,has_balcony_deck,1.03,0.58,0.94,0.52
+shuffled,Gradient boosting,all,feature,has_broadband,0.08,0.1,0.08,0.11
+shuffled,Gradient boosting,all,feature,has_courtyard_garden,0.01,0.05,0.01,0.05
+shuffled,Gradient boosting,all,feature,has_dishwasher,1.32,0.43,1.18,0.29
+shuffled,Gradient boosting,all,feature,has_ensuite,0.11,0.07,0.1,0.07
+shuffled,Gradient boosting,all,feature,has_floorboards,0.02,0.06,0.02,0.06
+shuffled,Gradient boosting,all,feature,has_furnished,3.7,0.94,3.36,0.74
+shuffled,Gradient boosting,all,feature,has_gym,0.33,0.46,0.29,0.42
+shuffled,Gradient boosting,all,feature,has_heating,0.1,0.12,0.09,0.11
+shuffled,Gradient boosting,all,feature,has_outdoor_entertaining,0.12,0.07,0.11,0.06
+shuffled,Gradient boosting,all,feature,has_pets_allowed,0.32,0.24,0.29,0.2
+shuffled,Gradient boosting,all,feature,has_pool,2.06,1.6,1.88,1.46
+shuffled,Gradient boosting,all,feature,has_rumpus_room,0.05,0.13,0.04,0.12
+shuffled,Gradient boosting,all,feature,has_secure_parking,0.17,0.1,0.16,0.09
+shuffled,Gradient boosting,all,feature,has_security,0.06,0.05,0.05,0.05
+shuffled,Gradient boosting,all,feature,has_shed,-0.0,0.0,-0.0,0.0
+shuffled,Gradient boosting,all,feature,has_study,0.55,0.14,0.5,0.11
+shuffled,Gradient boosting,all,feature,hospital_km,0.97,0.72,0.92,0.76
+shuffled,Gradient boosting,all,feature,is_metro,3.45,0.63,3.14,0.48
+shuffled,Gradient boosting,all,feature,park_km,0.79,0.34,0.74,0.34
+shuffled,Gradient boosting,all,feature,property_group,2.96,1.2,2.63,0.95
+shuffled,Gradient boosting,all,feature,school_km,0.18,0.21,0.17,0.22
+shuffled,Gradient boosting,all,feature,shop_km,0.68,0.55,0.61,0.49
+shuffled,Gradient boosting,all,feature,train_km,1.07,0.73,0.95,0.64
+shuffled,Gradient boosting,all,group,Area socio-economics,27.54,4.91,25.42,6.44
+shuffled,Gradient boosting,all,group,City access,60.75,8.2,55.22,5.23
+shuffled,Gradient boosting,all,group,Comfort and appliances,1.68,0.35,1.52,0.19
+shuffled,Gradient boosting,all,group,Dining and entertainment,15.48,4.62,14.0,3.88
+shuffled,Gradient boosting,all,group,Local services,2.7,0.87,2.53,1.06
+shuffled,Gradient boosting,all,group,Outdoor and extras,9.26,4.2,8.39,3.7
+shuffled,Gradient boosting,all,group,Property type,2.83,1.1,2.53,0.86
+shuffled,Gradient boosting,all,group,Size,145.46,20.56,131.94,9.64
+shuffled,Gradient boosting,all,group,Transport,1.27,0.58,1.14,0.51
+shuffled,Gradient boosting,metro,group,Area socio-economics,27.67,7.51,26.64,8.84
+shuffled,Gradient boosting,metro,group,City access,54.95,6.7,52.0,3.2
+shuffled,Gradient boosting,metro,group,Comfort and appliances,1.64,0.27,1.56,0.23
+shuffled,Gradient boosting,metro,group,Dining and entertainment,16.43,5.11,15.4,4.21
+shuffled,Gradient boosting,metro,group,Local services,2.46,0.84,2.39,0.97
+shuffled,Gradient boosting,metro,group,Outdoor and extras,9.8,4.47,9.21,3.98
+shuffled,Gradient boosting,metro,group,Property type,2.98,1.31,2.76,1.11
+shuffled,Gradient boosting,metro,group,Size,152.48,23.0,143.85,9.8
+shuffled,Gradient boosting,metro,group,Transport,0.85,0.48,0.8,0.44
+shuffled,Gradient boosting,regional,group,Area socio-economics,6.15,8.27,3.9,4.99
+shuffled,Gradient boosting,regional,group,City access,1.92,2.52,1.25,1.88
+shuffled,Gradient boosting,regional,group,Comfort and appliances,1.58,1.37,1.04,0.88
+shuffled,Gradient boosting,regional,group,Dining and entertainment,2.16,2.6,1.63,2.17
+shuffled,Gradient boosting,regional,group,Local services,1.86,1.63,1.4,1.36
+shuffled,Gradient boosting,regional,group,Outdoor and extras,5.7,2.93,3.81,1.77
+shuffled,Gradient boosting,regional,group,Property type,1.29,0.59,0.86,0.31
+shuffled,Gradient boosting,regional,group,Size,83.65,22.56,57.25,9.43
+shuffled,Gradient boosting,regional,group,Transport,2.84,3.74,1.8,2.42
+shuffled,Linear regression,all,feature,INCOME_GROWTH_2018_19_2022_23,0.31,0.54,0.33,0.57
+shuffled,Linear regression,all,feature,MEDIAN_INCOME_2022_23,11.46,7.26,11.82,7.67
+shuffled,Linear regression,all,feature,POP_GROWTH_2021_2025,0.48,1.13,0.56,1.32
+shuffled,Linear regression,all,feature,VIF_GROWTH_2026_2031,5.91,6.01,5.93,5.69
+shuffled,Linear regression,all,feature,bathrooms,18.87,2.51,19.43,1.86
+shuffled,Linear regression,all,feature,bedrooms,68.0,12.1,69.71,8.18
+shuffled,Linear regression,all,feature,bus_stop_km,-0.02,0.08,-0.02,0.08
+shuffled,Linear regression,all,feature,carspaces,2.83,1.22,2.89,1.08
+shuffled,Linear regression,all,feature,cbd_route_km,24.2,5.7,24.82,5.41
+shuffled,Linear regression,all,feature,entertainment_within_1km,19.2,4.55,19.63,3.53
+shuffled,Linear regression,all,feature,has_air_conditioning,0.02,0.01,0.02,0.01
+shuffled,Linear regression,all,feature,has_balcony_deck,0.71,0.29,0.74,0.33
+shuffled,Linear regression,all,feature,has_broadband,-0.0,0.08,-0.0,0.08
+shuffled,Linear regression,all,feature,has_courtyard_garden,0.03,0.06,0.03,0.06
+shuffled,Linear regression,all,feature,has_dishwasher,0.5,0.39,0.5,0.36
+shuffled,Linear regression,all,feature,has_ensuite,0.04,0.06,0.04,0.06
+shuffled,Linear regression,all,feature,has_floorboards,0.02,0.07,0.02,0.08
+shuffled,Linear regression,all,feature,has_furnished,2.59,0.52,2.66,0.41
+shuffled,Linear regression,all,feature,has_gym,-0.12,0.25,-0.13,0.27
+shuffled,Linear regression,all,feature,has_heating,0.21,0.17,0.22,0.18
+shuffled,Linear regression,all,feature,has_outdoor_entertaining,0.32,0.22,0.32,0.2
+shuffled,Linear regression,all,feature,has_pets_allowed,-0.03,0.06,-0.03,0.07
+shuffled,Linear regression,all,feature,has_pool,0.45,0.41,0.46,0.39
+shuffled,Linear regression,all,feature,has_rumpus_room,-0.03,0.1,-0.04,0.1
+shuffled,Linear regression,all,feature,has_secure_parking,-0.03,0.09,-0.03,0.1
+shuffled,Linear regression,all,feature,has_security,-0.08,0.08,-0.08,0.08
+shuffled,Linear regression,all,feature,has_shed,-0.02,0.04,-0.02,0.04
+shuffled,Linear regression,all,feature,has_study,0.96,0.21,1.0,0.28
+shuffled,Linear regression,all,feature,hospital_km,1.72,1.24,1.84,1.33
+shuffled,Linear regression,all,feature,is_metro,2.4,0.43,2.45,0.23
+shuffled,Linear regression,all,feature,park_km,1.26,0.3,1.32,0.39
+shuffled,Linear regression,all,feature,property_group,9.58,1.92,9.94,2.23
+shuffled,Linear regression,all,feature,school_km,-0.03,0.35,-0.02,0.34
+shuffled,Linear regression,all,feature,shop_km,-0.08,0.09,-0.08,0.09
+shuffled,Linear regression,all,feature,train_km,1.38,0.54,1.4,0.49
+shuffled,Linear regression,all,group,Area socio-economics,17.41,6.79,17.91,6.8
+shuffled,Linear regression,all,group,City access,29.7,7.32,30.51,7.26
+shuffled,Linear regression,all,group,Comfort and appliances,0.53,0.36,0.53,0.34
+shuffled,Linear regression,all,group,Dining and entertainment,19.34,4.57,19.76,3.52
+shuffled,Linear regression,all,group,Local services,2.59,1.32,2.78,1.59
+shuffled,Linear regression,all,group,Outdoor and extras,9.07,2.5,9.34,2.63
+shuffled,Linear regression,all,group,Property type,9.36,1.89,9.7,2.1
+shuffled,Linear regression,all,group,Size,118.59,16.97,121.7,8.92
+shuffled,Linear regression,all,group,Transport,1.43,0.65,1.45,0.61
+shuffled,Linear regression,metro,group,Area socio-economics,18.43,7.5,19.86,7.95
+shuffled,Linear regression,metro,group,City access,20.96,5.37,22.57,5.64
+shuffled,Linear regression,metro,group,Comfort and appliances,0.45,0.4,0.47,0.43
+shuffled,Linear regression,metro,group,Dining and entertainment,20.11,5.9,21.42,4.59
+shuffled,Linear regression,metro,group,Local services,2.6,1.37,2.96,1.83
+shuffled,Linear regression,metro,group,Outdoor and extras,9.82,3.11,10.59,3.36
+shuffled,Linear regression,metro,group,Property type,9.97,2.36,10.81,2.59
+shuffled,Linear regression,metro,group,Size,120.13,19.06,128.93,8.76
+shuffled,Linear regression,metro,group,Transport,0.5,1.02,0.52,1.05
+shuffled,Linear regression,regional,group,Area socio-economics,4.85,2.39,3.6,1.57
+shuffled,Linear regression,regional,group,City access,2.27,1.91,1.72,1.45
+shuffled,Linear regression,regional,group,Comfort and appliances,0.8,0.45,0.59,0.32
+shuffled,Linear regression,regional,group,Dining and entertainment,2.37,3.41,1.84,2.76
+shuffled,Linear regression,regional,group,Local services,0.79,3.22,0.67,2.47
+shuffled,Linear regression,regional,group,Outdoor and extras,5.47,1.88,4.07,1.31
+shuffled,Linear regression,regional,group,Property type,4.51,2.59,3.29,1.81
+shuffled,Linear regression,regional,group,Size,95.91,23.49,71.21,12.68
+shuffled,Linear regression,regional,group,Transport,2.23,2.7,1.62,2.05
