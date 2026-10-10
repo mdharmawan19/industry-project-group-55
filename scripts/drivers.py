@@ -1,23 +1,18 @@
-"""Population and housing growth for DFFH areas, and whether they explain rent growth (Question 2).
+"""Population growth for DFFH areas, and whether it improves the rent forecasts (Question 2).
 
-Population comes from notebook 04 (`sa2_features.csv`: ABS estimates 2021-25 and Victoria in Future
-projections); dwellings from Victoria in Future (`vif.load_vif_sa2`). Both are by SA2. Each DFFH area is linked
-to SA2s through its suburbs (DFFH crosswalk -> suburb_sa2_crosswalk, using each suburb's main SA2), and SA2
-counts are summed before growth is computed, so a large SA2 counts more than a small one.
+Population comes from notebook 04 (`sa2_features.csv`: ABS estimates 2021-25 and Victoria in Future projections),
+by SA2. Each DFFH area is linked to SA2s through its suburbs (DFFH crosswalk -> suburb_sa2_crosswalk, using each
+suburb's main SA2), and SA2 populations are summed before growth is computed, so a large SA2 counts more than a small
+one.
 """
 import numpy as np
 import pandas as pd
 
-COUNTS = ["POP_2021", "POP_2025", "VIF_POP_2026", "VIF_POP_2031", "DWELL_2021", "DWELL_2026", "DWELL_2031"]
+COUNTS = ["POP_2021", "POP_2025", "VIF_POP_2026", "VIF_POP_2031"]
 
 
 def _cagr(end, start, years):
     return ((end / start) ** (1 / years) - 1) * 100
-
-
-def sa2_table(sa2_features, dwellings):
-    """One row per SA2 with the population and dwelling counts used here."""
-    return sa2_features.merge(dwellings, on="SA2_CODE21")[["SA2_CODE21", "SA2_NAME21", "GCCSA"] + COUNTS]
 
 
 def main_sa2(suburb_sa2):
@@ -26,22 +21,13 @@ def main_sa2(suburb_sa2):
             .drop_duplicates("suburb_key")[["suburb_key", "SA2_CODE21"]])
 
 
-def growth_rates(t):
-    """% a year from summed counts: actual population 2021-25, dwellings 2021-26, projections 2026-31."""
-    return pd.DataFrame({
-        "pop_growth_2021_25": _cagr(t["POP_2025"], t["POP_2021"], 4),
-        "dwelling_growth_2021_26": _cagr(t["DWELL_2026"], t["DWELL_2021"], 5),
-        "pop_growth_2026_31": _cagr(t["VIF_POP_2031"], t["VIF_POP_2026"], 5),
-        "dwelling_growth_2026_31": _cagr(t["DWELL_2031"], t["DWELL_2026"], 5),
-    }, index=t.index)
-
-
-def area_growth(dffh_crosswalk, suburb_sa2, sa2):
-    """Population and dwelling growth (% a year) for each DFFH area."""
+def area_growth(dffh_crosswalk, suburb_sa2, sa2_features):
+    """Population growth (% a year) for each DFFH area: actual 2021-25 and projected 2026-31."""
     pairs = (dffh_crosswalk.merge(main_sa2(suburb_sa2), on="suburb_key")
              [["dffh_area", "SA2_CODE21"]].drop_duplicates())
-    totals = pairs.merge(sa2, on="SA2_CODE21").groupby("dffh_area")[COUNTS].sum()
-    return growth_rates(totals)
+    t = pairs.merge(sa2_features[["SA2_CODE21"] + COUNTS], on="SA2_CODE21").groupby("dffh_area")[COUNTS].sum()
+    return pd.DataFrame({"pop_growth_2021_25": _cagr(t["POP_2025"], t["POP_2021"], 4),
+                         "pop_growth_2026_31": _cagr(t["VIF_POP_2031"], t["VIF_POP_2026"], 5)}, index=t.index)
 
 
 def rent_growth(panel, start="2020Q3", end="2025Q3", property_type="All properties"):
@@ -53,42 +39,34 @@ def rent_growth(panel, start="2020Q3", end="2025Q3", property_type="All properti
 
 
 def trend_miss(bt, method, origin="2020Q3"):
-    """How far actual rent ended above (+) or below (-) the trend forecast, % a year."""
+    """How far actual rent ended above (+) or below (-) a method's forecast, % a year."""
     b = bt[(bt["origin"] == origin) & (bt["method"] == method)].set_index("area")
     return (np.log(b["actual_5y"] / b["forecast_5y"]) / 5 * 100).rename("trend_miss")
 
 
-def _loo_error(X, y):
-    """Leave-one-out mean absolute error of a linear fit (each area predicted from all the others)."""
-    X = np.column_stack([np.ones(len(y)), X])
-    errs = []
+def _loo_nudge(x, y):
+    """Leave-one-out nudge for each area: fit y = b·(x − average) on all the other areas, then apply it to this one.
+    x is centred on the average area, so a typical area gets no nudge: any gain comes from telling areas apart,
+    not from shifting every forecast up or down."""
+    nudge = np.empty(len(y))
     for i in range(len(y)):
         keep = np.arange(len(y)) != i
-        beta = np.linalg.lstsq(X[keep], y[keep], rcond=None)[0]
-        errs.append(abs(y[i] - X[i] @ beta))
-    return float(np.mean(errs))
+        xc = x[keep] - x[keep].mean()
+        b = (xc @ y[keep]) / (xc @ xc)
+        nudge[i] = (x[i] - x[keep].mean()) * b
+    return nudge
 
 
-def evidence(growth, rent, miss):
-    """(table, errors): rank correlations of population and dwelling growth with actual rent growth and with
-    the trend forecast's misses; and the leave-one-out error of predicting those misses without and with them."""
-    d = growth.join(rent).join(miss).dropna()
-    drivers = {"Population growth 2021-25": "pop_growth_2021_25",
-               "Dwelling growth 2021-26": "dwelling_growth_2021_26"}
-    table = pd.DataFrame({
-        "with rent growth 2020-25": {k: d[v].corr(d["rent_growth"], method="spearman") for k, v in drivers.items()},
-        "with where the trend forecast missed": {k: d[v].corr(d["trend_miss"], method="spearman")
-                                                 for k, v in drivers.items()},
-    }).round(2)
-    y = d["trend_miss"].to_numpy()
-    errors = {"trend alone": _loo_error(np.empty((len(y), 0)), y),
-              "trend + population + dwellings": _loo_error(d[list(drivers.values())].to_numpy(), y)}
-    return table, errors, len(d)
-
-
-def uncovered_sa2_growth(sa2, suburb_sa2, dffh_crosswalk, gccsa="2GMEL"):
-    """Projected growth for SA2s that contain our listings' suburbs but no DFFH area (e.g. growth corridors)."""
-    covered = set(main_sa2(suburb_sa2).merge(dffh_crosswalk, on="suburb_key")["SA2_CODE21"])
-    with_listings = set(suburb_sa2["SA2_CODE21"])
-    t = sa2[sa2["SA2_CODE21"].isin(with_listings - covered) & (sa2["GCCSA"] == gccsa)].set_index("SA2_NAME21")
-    return growth_rates(t[COUNTS]).sort_values("pop_growth_2026_31", ascending=False)
+def with_without(bt, growth, origin="2020Q3"):
+    """Back-test error (%, 5 years ahead) of every method at one test date, without and with a population nudge.
+    The nudge is learned from the other areas (leave-one-out) and uses each area's actual 2021-25 population growth,
+    i.e. hindsight, which favours population. Returns (table, number of areas)."""
+    rows = {}
+    for method in bt["method"].unique():
+        b = bt[(bt["origin"] == origin) & (bt["method"] == method)].set_index("area")
+        d = b.join(growth["pop_growth_2021_25"]).join(trend_miss(bt, method, origin)).dropna()
+        nudge = _loo_nudge(d["pop_growth_2021_25"].to_numpy(), d["trend_miss"].to_numpy())
+        adjusted = d["forecast_5y"] * np.exp(5 * nudge / 100)
+        rows[method] = {"without": d["abs_pct_error"].mean(),
+                        "with": (np.abs(adjusted / d["actual_5y"] - 1) * 100).mean()}
+    return pd.DataFrame(rows).T, len(d)
