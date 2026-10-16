@@ -2,8 +2,7 @@
 
 Notebook 03 uses the "Moving annual median rent by suburb and town" workbook: a 12-month rolling
 median for ~146 suburb groups ("areas"), one sheet per property type, with a Count and a Median
-column per quarter. The council-level "Quarterly median rents by LGA" workbook has the same layout
-and also loads with load_dffh_workbook, but is not used.
+column per quarter.
 """
 import re
 
@@ -22,10 +21,9 @@ def standard_type(sheet):
 
 
 def load_dffh_workbook(path):
-    """Reshape a DFFH Rental Report workbook (suburb or LGA) into a long panel.
+    """Reshape the DFFH "Moving annual median rent by suburb and town" workbook into a long panel.
 
-    Returns: region, area, property_type, quarter, count, median_rent.
-    `area` is the suburb group (suburb workbook) or the council (LGA workbook).
+    Returns: region, area, property_type, quarter, count, median_rent (`area` = DFFH suburb group).
     """
     xl = pd.ExcelFile(path)
     frames = []
@@ -79,8 +77,6 @@ def load_dffh_workbook(path):
             .reset_index(drop=True))
 
 
-load_dffh_suburb_panel = load_dffh_workbook   # original name, kept for existing code
-
 # DFFH names that don't match the Domain suburb list
 AREA_ALIASES = {
     "CBD": "Melbourne",
@@ -112,32 +108,6 @@ def make_suburb_key(suburb, postcode):
     s = re.sub(r"\s+", "_", str(suburb).strip().upper())
     return f"{s}_{int(postcode)}"
 
-def coverage_filter(panel, start="2015Q3", end="2025Q3",
-                    min_coverage=0.95, min_count=20):
-    """Keep area x property_type series with enough data over the window."""
-    w = panel[(panel.quarter >= pd.Period(start, "Q")) &
-              (panel.quarter <= pd.Period(end, "Q"))]
-    stats = w.groupby(["area", "property_type"]).agg(
-        cov=("median_rent", lambda x: x.notna().mean()),
-        med_count=("count", "median"))
-    keep = stats[(stats["cov"] >= min_coverage) &
-                 (stats["med_count"] >= min_count)].index
-    idx = w.set_index(["area", "property_type"])
-    return idx.loc[idx.index.isin(keep)].reset_index()
-
-
-def growth_cagr(panel, property_type="All properties",
-                start="2015Q3", end="2025Q3"):
-    """Annualised growth in median rent between two quarters, per area."""
-    yrs = (pd.Period(end, "Q") - pd.Period(start, "Q")).n / 4
-    sub = panel[(panel.property_type == property_type) &
-                (panel.quarter.isin([pd.Period(start, "Q"),
-                                     pd.Period(end, "Q")]))]
-    piv = sub.pivot_table(index="area", columns="quarter", values="median_rent")
-    piv.columns = ["rent_start", "rent_end"]
-    piv = piv.dropna()
-    piv["cagr_pct"] = ((piv.rent_end / piv.rent_start) ** (1 / yrs) - 1) * 100
-    return piv.sort_values("cagr_pct", ascending=False).reset_index()    
 def yoy_growth(panel, property_type="All properties", min_count=20):
     """Year-on-year growth per area per quarter.
 
@@ -160,9 +130,6 @@ def yoy_growth(panel, property_type="All properties", min_count=20):
               "count", "yoy_pct"]].reset_index(drop=True)
 
 
-# --------------------------------------------------------------------------------------
-# Additions for the cleaned pipeline (notebook 03)
-# --------------------------------------------------------------------------------------
 def build_area_suburb_crosswalk(areas, postcodes, listing_keys=()):
     """DFFH area -> the suburbs it contains, each with the postcode our listings use.
 

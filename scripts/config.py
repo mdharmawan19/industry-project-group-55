@@ -40,9 +40,7 @@ DFFH_SUBURB_XLSX = max(EXTERNAL.glob("Moving annual*rent*suburb*.xlsx"), key=lam
 LISTINGS = CURATED / "listings.parquet"                  # all snapshots, shared columns
 LISTING_SA2 = CURATED / "listing_sa2.parquet"          # built by 04: listings + SA2 + population/income/VIF2023
 LISTINGS_FINAL = CURATED / "listings_final.parquet"    # built by 05_geospatial_routing: + location features
-DFFH_PANEL = CURATED / "dffh_rent_panel.parquet"
-DFFH_CROSSWALK = CURATED / "dffh_area_suburb_crosswalk.csv"
-DFFH_YOY = CURATED / "dffh_yoy_growth.parquet"
+DFFH_CROSSWALK = CURATED / "dffh_area_suburb_crosswalk.csv"   # built by 03: DFFH area -> suburbs
 
 MELBOURNE_CBD = (-37.8136, 144.9631)   # lat, lon (Flinders St / Swanston St corner)
 
