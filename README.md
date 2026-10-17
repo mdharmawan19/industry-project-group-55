@@ -10,15 +10,18 @@ and Q2 in `03_dffh_panel`.
 |---|---|---|---|
 | 02 | `02_scraping` | rent.com.au (each person scrapes a share with `scripts/scrape_rentcomau.py`) | `data/raw/rentcomau/2026-09/vic_rentals_rentcomau.csv` |
 | 01 | `01_data_curation` | Domain 2025 CSV, rent.com.au 2026 CSV | `data/curated/listings.parquet` (one row per listing, both years, 62 columns) |
-| 03 | `03_dffh_panel` (**Q2**) | DFFH "Moving annual median rent by suburb and town" workbook, `listings.parquet` | 5-year rent forecast to 2030Q3, chosen by back-test: `dffh_rent_panel.parquet`, `dffh_area_suburb_crosswalk.csv`, `dffh_yoy_growth.parquet`, `forecast_backtest.csv`, `rent_forecast_areas.csv`, `plots/forecast_top10.png`, `plots/dffh_rent_and_growth.png` |
+| 03 | `03_dffh_panel` (**Q2**) | DFFH "Moving annual median rent by suburb and town" workbook, `postcodes.csv`; `suburb_sa2_crosswalk.csv` and `sa2_features.csv` (from 04, already in the repo); `listings.parquet` (from 01, optional) | 5-year rent forecast to 2030Q3 for 145 DFFH areas, chosen by back-test: `dffh_area_suburb_crosswalk.csv` (read by 01, 04, 07), `rent_forecast_areas.csv` (read by 07), `forecast_backtest.csv`; plots `dffh_rent_and_growth.png`, `population_vs_rent_growth.png`, `forecast_top10.png`, `what_if_top10.png` |
 | 04 | `04_abs_sa2_crosswalk` | `listings.parquet`, DFFH crosswalk, SA2 boundaries, ABS population and income, VIF2023 | `listing_sa2.parquet` (85 columns), `sa2_features.parquet`, `suburb_sa2_crosswalk.csv`, SA2 maps |
 | 05 | `05_geospatial_routing` | `listing_sa2.parquet`, PTV GTFS, school locations, OpenStreetMap, OSRM routes | `listings_final.parquet` (111 columns), station driving-distance map |
 | 06 | `06_rent_drivers` | `listings_final.parquet` | internal and external rent-driver rankings and charts |
 
-02 is only needed to re-scrape; with the merged CSV in place, start at 01. 03 runs after 01 and takes about
-3–5 minutes (the ARIMA back-test). Shared code is in `scripts/` (`config.py` holds every file path, `listings.py`
-the cleaning rules, `geo.py` the location features, `dffh.py` the DFFH helpers, `forecast.py` the Q2 forecasting
-methods).
+02 is only needed to re-scrape; with the merged CSV in place, start at 01. 03 takes about 3–5 minutes (the ARIMA
+back-test). 03 and 04 use each other's outputs (04 reads 03's area-to-suburb crosswalk; 03 reads 04's population
+files for its population test). Both are committed in `data/curated/`, so either can be run first. 03 does not need
+the listings: without `listings.parquet` it reuses the postcode choices saved in the committed crosswalk.
+Shared code is in `scripts/` (`config.py` holds every file path, `listings.py` the cleaning rules, `geo.py` the
+location features, `dffh.py` the DFFH helpers, `forecast.py` the Q2 forecasting methods, `drivers.py` the Q2
+population test).
 
 ## Data setup
 
