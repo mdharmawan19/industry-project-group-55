@@ -1,8 +1,12 @@
 # industry-project-group-55
 
 MAST30034 Project 2: Victorian rental prices. Which internal and external features drive rent (Q1), which suburbs
-will grow fastest (Q2), and which suburbs are most liveable and affordable (Q3). Q1 is answered in `06_rent_drivers`
-and Q2 in `03_dffh_panel`.
+will grow fastest (Q2), and which suburbs are most liveable and affordable (Q3). Q1 is answered in `06_rent_drivers`,
+Q2 in `03_dffh_panel` and Q3 in `07_liveability`.
+
+**Start with [`notebooks/00_summary.ipynb`](notebooks/00_summary.ipynb)**: the answers to all three questions, our
+approach, the issues we ran into, and the assumptions and limitations. It reads only the committed summaries in
+`data/curated/` and `plots/`, so it runs without any raw data.
 
 ## Run order
 
@@ -13,15 +17,19 @@ and Q2 in `03_dffh_panel`.
 | 03 | `03_dffh_panel` (**Q2**) | DFFH "Moving annual median rent by suburb and town" workbook, `postcodes.csv`; `suburb_sa2_crosswalk.csv` and `sa2_features.csv` (from 04, already in the repo); `listings.parquet` (from 01, optional) | 5-year rent forecast to 2030Q3 for 145 DFFH areas, chosen by back-test: `dffh_area_suburb_crosswalk.csv` (read by 01, 04, 07), `rent_forecast_areas.csv` (read by 07), `forecast_backtest.csv`; plots `dffh_rent_and_growth.png`, `population_vs_rent_growth.png`, `forecast_top10.png`, `what_if_top10.png` |
 | 04 | `04_abs_sa2_crosswalk` | `listings.parquet`, DFFH crosswalk, SA2 boundaries, ABS population and income, VIF2023 | `listing_sa2.parquet` (85 columns), `sa2_features.parquet`, `suburb_sa2_crosswalk.csv`, SA2 maps |
 | 05 | `05_geospatial_routing` | `listing_sa2.parquet`, PTV GTFS, school locations, OpenStreetMap, OSRM routes | `listings_final.parquet` (111 columns), station driving-distance map |
-| 06 | `06_rent_drivers` | `listings_final.parquet` | internal and external rent-driver rankings and charts |
+| 06 | `06_rent_drivers` (**Q1**) | `listings_final.parquet` | seven-model comparison, feature importance and pricing guide: `q1_model_comparison.csv`, `q1_importance.csv`, `q1_pricing_guide.csv`; plots `q1_group_importance.png`, `q1_feature_importance.png` |
+| 07 | `07_liveability` (**Q3**) | `listings_final.parquet`, `rent_forecast_areas.csv` and `dffh_area_suburb_crosswalk.csv` (from 03) | liveability and affordability by suburb and the investment shortlist: `suburb_liveability.csv`; plots `liveability_vs_affordability.png`, `liveability_vs_growth.png`, `investment_heatmap_rent_to_income.png` |
+| 00 | `00_summary` (**start here**) | committed `data/curated/*.csv` and `plots/` | nothing; summary of the whole project |
 
 02 is only needed to re-scrape; with the merged CSV in place, start at 01. 03 takes about 3–5 minutes (the ARIMA
 back-test). 03 and 04 use each other's outputs (04 reads 03's area-to-suburb crosswalk; 03 reads 04's population
 files for its population test). Both are committed in `data/curated/`, so either can be run first. 03 does not need
-the listings: without `listings.parquet` it reuses the postcode choices saved in the committed crosswalk.
+the listings: without `listings.parquet` it reuses the postcode choices saved in the committed crosswalk. 06 takes
+about 12 minutes on its first run and about a minute after that (model results are cached in `data/curated/q1_cache/`).
+Run 07 after 03 and 05.
 Shared code is in `scripts/` (`config.py` holds every file path, `listings.py` the cleaning rules, `geo.py` the
 location features, `dffh.py` the DFFH helpers, `forecast.py` the Q2 forecasting methods, `drivers.py` the Q2
-population test).
+population test, `rent_model.py` the Q1 models, `style.py` the shared chart style).
 
 ## Data setup
 

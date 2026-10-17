@@ -1,6 +1,6 @@
 """Question 1 modelling: which internal and external features predict rent.
 
-Used by notebooks/06b_rent_drivers.ipynb. The notebook sets out the method; this module holds the
+Used by notebooks/06_rent_drivers.ipynb. The notebook sets out the method; this module holds the
 pieces it repeats: preparing the model table, building one pipeline per model, grouped
 cross-validation, permutation importance and what-if dollar values.
 
