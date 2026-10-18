@@ -100,7 +100,8 @@ Every output goes to `data/curated/` (tables) or `plots/` (charts).
    `scripts/scrape_rentcomau.py` for their share of suburbs (needs internet); the notebook then merges everyone's
    files into `vic_rentals_rentcomau.csv`.
 2. **`01_data_curation`**: cleans and stacks the 2025 and 2026 listings into `listings.parquet` (one row per
-   listing, 62 columns). Without the scraped file, the table has 2025 only.
+   listing, 62 columns). Without the scraped file, the table has 2025 only. Its saved outputs are cleared on purpose
+   (see "Privacy" below); run it locally to see them.
 3. **`04_abs_sa2_crosswalk`**: places each listing in its SA2 and adds population, income and projections.
    Writes `listing_sa2.parquet` (85 columns), `sa2_features.parquet`, `suburb_sa2_crosswalk.csv` and the SA2 maps.
 4. **`03_dffh_panel` (Q2)**: forecasts rent to 2030 for 145 DFFH areas. Writes `rent_forecast_areas.csv`,
@@ -138,6 +139,8 @@ The charts in `plots/` are written by the notebooks above, except `presentation_
 
 - **No listing-level data in this public repository.** Only suburb- and area-level summaries and charts are
   committed, and notebooks show summaries rather than individual listings.
+- **Notebook 01's outputs are cleared on purpose.** Several of its cells display individual Domain listings (IDs,
+  addresses, rents), which may not be redistributed. Its findings are written up in its markdown and in `00_summary`.
 - **No API keys are needed.** Road distances use the public OSRM server. Any key file (e.g. `ors_config.env`) is
   listed in `.gitignore`.
 - **The scraper is polite.** It follows robots.txt, waits about 5 seconds between requests (never less than 3), and
